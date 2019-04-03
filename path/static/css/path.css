@@ -1,0 +1,229 @@
+.data_content{
+    /*overflow-x: hidden;*/
+    background-color: #081832;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    height: 90%;
+}
+.path_content{
+    /*overflow-x: hidden;*/
+    background-color: #081832;
+    padding-top: 0px;
+    padding-bottom: 20px;
+    height: calc(100% - 80px);
+}
+
+.main_left{
+    width: 24%;
+    height: 100%;
+    margin-left: 2%;
+}
+
+.main_center{
+    width: 74%;
+    height: 100%;
+}
+.fl{
+    float: left;
+}
+.main_center .center_text{
+    width: calc(100% - 50px);
+    height: 100%;
+    margin-left: 25px;
+    margin-right: 25px;
+    box-sizing: border-box;
+    border: 1px solid #2C58A6;
+    border-radius: 2px;
+    position: relative;
+}
+.main_center .main_title{
+    width: 180px;
+    height: 35px;
+    line-height: 33px;
+    background-color: #2C58A6;
+    border-radius: 2px;
+    position: absolute;
+    top: -17px;
+    left: 50%;
+    margin-left: -90px;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    box-sizing: border-box;
+    z-index: 1000;
+    text-align: center;
+}
+.l_t_line{
+    width: 5px;
+    height: 24px;
+    left: -3px;
+    top: -3px;
+}
+.t_l_line{
+    height: 5px;
+    width: 26px;
+    left: -3px;
+    top: -3px;
+}
+.t_line_box {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+.t_line_box i{
+    background-color: #4788fb;
+    box-shadow: 0px 0px 10px #4788fb;
+    position: absolute;
+}
+.t_r_line{
+    height: 5px;
+    width: 26px;
+    right: -3px;
+    top: -3px;
+}.t_title {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    font-size: 2.5em;
+    line-height: 80px;
+    color: #fff;
+}
+.r_t_line{
+    width: 5px;
+    height: 24px;
+    right: -3px;
+    top: -3px;
+}
+.l_b_line{
+    width: 5px;
+    height: 24px;
+    left: -3px;
+    bottom: -3px;
+}
+.b_l_line{
+    height: 5px;
+    width: 26px;
+    left: -3px;
+    bottom: -3px;
+}
+.r_b_line{
+    width: 5px;
+    height: 24px;
+    right: -3px;
+    bottom: -3px;
+}
+.b_r_line{
+    height: 5px;
+    width: 26px;
+    right: -3px;
+    bottom: -3px;
+}
+.path_left_search{
+    position: relative;
+    height: 90%;
+}
+.search_div{
+    background:#3490ba;
+    font-family: 黑体;
+    font-size: medium;
+    color: #fff;
+    margin: 5%;
+}
+.left_input{
+    color: #000;
+    /* margin: 5px 5px 5px 5px; */
+    height: 130px;
+}
+.left_input_head{
+    color: #000;
+    height: auto;
+}
+.left_input_top{
+    color: #000;
+    height: 100%;
+    min-height: 40px;
+    overflow: auto;
+}
+
+.left_input input,.left_input_top input{
+    height:33px;
+    width:calc(100% - 60px);
+    border-radius:3px !important;
+    color: #000 !important;
+    border: 1px solid #9E9E9E !important;
+    background-color: #cccccc4f !important;
+    padding-left:15px;
+    font-size:12px;
+    margin-top: 5px;
+    float: right;
+}
+.left_input select,.left_input_top select{
+    height: 30px;
+    width:calc(100% - 60px);
+    border-radius:3px;
+    color: #060606;
+    border: 1px solid #9E9E9E;
+    background-color: #cccccc4f;
+    padding-left:15px;
+    font-size:12px;
+    margin-top: 5px;
+    float: right;
+}
+.left_input option,.left_input_top option{
+    color: black;
+    background: #cccccc4f;
+    line-height: 20px;
+}
+.left_button{
+    text-align:right;
+    margin-right: 5%;
+    position: absolute;
+    right: 10px;
+    bottom: 0;
+}
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+    color: grey;
+}
+
+input:-moz-placeholder, textarea:-moz-placeholder {
+    color: grey;
+}
+
+input::-moz-placeholder, textarea::-moz-placeholder {
+    color: grey;
+}
+
+input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+    color: grey;
+}
+
+.tag{
+    width:40px;
+    line-height: 35px;
+    margin-left: 20px;
+    font-size: 11px;
+}
+.head-tag{
+    line-height: 35px;
+    margin-left: 20px;
+    font-size: 11px;
+    display: block
+}
+.highlight-btn{
+    background-color: #0E94EA;
+    color: #fff;
+    width: 50px;
+    height: 25px;
+    border-width:0;
+    border-radius:6px;
+    float: right;
+    margin-left: 3px;
+    margin-top: 8px;
+}
+svg{
+    width: 100% !important;
+    height: 95% !important;
+    margin-left: 35px !important;
+    z-index:9999 !important;
+}

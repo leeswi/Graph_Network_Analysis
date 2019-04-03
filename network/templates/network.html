@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% block link %}
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static "css/demo_button.css" %}">
+<link rel="stylesheet" href="{% static "css/data_text.css" %}">
+<link rel="stylesheet" href="{% static "css/BigData.css" %}">
+<link rel="stylesheet" href="{% static "css/graph.css" %}" >
+<link rel="stylesheet" href="{% static "css/bootstrap-table.scss" %}" >
+
+{% endblock %}
+
+{% block content %}
+<div class="net_content">
+<div class="index_tabs" >
+    <div class="inner">
+        <div class="data_left03">
+            <div class="dataAllNo01 maginS01">
+                <div class="dataAllBorder01">
+                    <div class="dataAllBorder02" id="dataAllBorder02">
+                        <div class="data_tit3">节点搜索</div>
+                            <div class="search d2">
+                                <form id = 'search' onsubmit="return false">
+                                    <input id="local_object_data" runat="server" autocomplete="off" data-provide="typeahead" data-items="12" class="input-sm form-control" type="text" placeholder="搜索从这里开始..." name="search">
+                                    <div id="deepsearch" style="display: none">
+                                        <select id="select_data_1">
+                                            <option value="" disabled selected>选择对象标签</option>
+                                            {% for i in labels %}
+                                            <option value="{{ i }}">{{ i.name }} </option>
+                                            {% endfor %}
+                                        </select>
+        {#                                <input id="local_object_data" runat="server" autocomplete="off" data-provide="typeahead" data-items="12" type="text" placeholder="输入对象标签" autocomplete="off">#}
+                                        <input id="local_object_data_" runat="server" autocomplete="off" data-provide="typeahead" data-items="12" type="text" placeholder="输入对象属性" autocomplete="off" name="pro">
+                                        <input id="deepth" placeholder="输入查询深度，默认为3" name="deepth">
+                                    </div>
+                                    <button type="submit"></button>
+                                    <span id="deepbtn">高级搜索</span>
+                                </form>
+                            </div>
+                            <div class = "panel1 panel-default searchpanel" id="btable">
+                                <table id="results" class="table table-striped table-hover">
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="data_left04">
+            <!--style="margin-top: 6.3%"-->
+            <div class="dataAllNo01">
+                <div class="dataAllBorder01">
+                    <div class="dataAllBorder02" >
+                        <div class="data_tit3">网络视图查看</div>
+                        <svg id="div1" width=90% height="calc(90%)" style="margin: 0 5% 5% 5%"></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="data_left03">
+            <div class="dataAllNo01 maginS01">
+                <div class="dataAllBorder01">
+                    <div class="dataAllBorder02">
+                        <div class="data_tit3">详细信息</div>
+                        <div class="dataAllBorder20">
+                            <table id="more" class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th style="width: 18%">属性</th>
+                                    <th>内容</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script src="{% static "js/jquery-2.2.1.min.js" %}"></script>
+<script src="{% static "js/bootstrap3-typeahead.js" %}"></script>
+<script src="{% static "js/d3.v5.min.js" %}"></script>
+<script src="{% static "js/d3.js" %}"></script>
+<script src="{% static "js/bootstrap-table.js" %}"></script>
+<script src="{% static "js/bootstrap-table-zh-CN.min.js" %}"></script>
+<script src="{% static "js/btable.js" %}"></script>
+<script src="{% static "js/ajax.js" %}"></script>
+<script>
+$('#local_object_data').typeahead({
+    source: function (query, process) {
+        $.ajax({
+            type: "GET",
+            url: "query",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            timeout: 50000,
+            async: false,
+            success: function (data) {
+                var temp=[];
+                {#for(let i of keyslist){#}
+                {#    if(node_label.includes(i.labels)){#}
+                {#        var show = i.main_key;#}
+                {#        var show2 = i.second_key;#}
+                {#        if(d[show]){return d[show];}#}
+                {#        if(d[show2]){return d[show2];}#}
+                {#    }#}
+                var keyslist = {{ keyslist|safe }};
+                for(let i of data){
+                    for(let j of keyslist){
+                        if(i.labels.includes(j.labels)){
+                            var show = j.main_key;
+                            var show2 = i.second_key;
+                            if(i.node[show]){temp.push(i.node[show]);}
+                            else if(i.node[show2]){temp.push(i.node[show2]);}
+                            else{temp.push(i.node['id']);}
+                        }
+                    }
+                }
+                return process(temp);
+            },
+            error: function (err) {
+                console.log("error"+err);
+            }
+        });
+    },
+    autoSelect: false,
+    items: 8,
+});
+
+$("#search").submit(function(){
+    find();
+    return false;
+    });
+function SearchMore(row) {
+    var index = row.index;
+    var label = row.labels;
+    var content = row.key;
+    $.get("search?index=" + encodeURIComponent(index)+"&label="+encodeURIComponent(label)+"&content="+encodeURIComponent(content),
+        function (data) {
+            var t = $("table#more tbody").empty();
+            if (!data || data.length == 0) {
+                $("<tr><td class = 'unit' id = 'result_'>" + "没有要查询的内容！" + "</td></tr>").appendTo(t)
+                return;
+            }
+            var content = data[2][0]['pro'];
+            for(var key in content){
+                $("<tr><td>"+key+"</td><td>"+content[key]+"</td></tr>").appendTo(t);
+            }
+            $("svg").empty();
+            ShowGraph(data[0],data[1],data[3]);
+        },"json");
+}
+var btn = $('#deepbtn');
+var spread = $('#deepsearch');
+btn.click(function () {
+    $("#btable").hide();
+    spread.slideToggle()
+})
+</script>
+
+{% endblock %}

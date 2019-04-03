@@ -1,0 +1,271 @@
+{% extends 'base.html' %}
+{% block link %}
+{% load staticfiles %}
+
+
+<link rel="stylesheet" href="{% static "css/demo_button.css" %}">
+
+<link rel="stylesheet" href="{% static "css/path.css" %}">
+<link rel="stylesheet" href="{% static "css/graph.css" %}">
+<link rel="stylesheet" href="{% static "css/BigData.css" %}">
+
+<link rel="stylesheet" href="{% static "css/beyond.css" %}" >
+{% endblock %}
+
+{% block content %}
+<div class="path_content">
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="navbar-container">
+                <div class="sidebar-collapse" id="sidebar-collapse">
+                    <i class="collapse-icon fa fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main-container container-fluid">
+        <div class="page-container">
+            <div class="page-sidebar menu-compact" id="sidebar">
+                <ul class="nav sidebar-menu">
+            <!--Dashboard-->
+            <li class="active open">
+                <a href="javascript:side_click();" class="menu-dropdown">
+                    <i class="menu-icon fa fa-gavel"></i>
+                    <span class="menu-text"> 参数输入 </span>
+                    <i class="menu-expand"></i>
+                </a>
+                <ul class="submenu">
+                    <form onsubmit="return false">
+                        <div class="left_input_top">
+                            <span class="tag">算法 </span>
+                            <select id="algo">
+                                <option value="1">单源最短路径</option>
+                                <option value="2">KSP最短路径</option>
+                            </select>
+                        </div>
+                    </form>
+                </ul>
+                <ul class="submenu">
+                    <form onsubmit="return false">
+                        <div class="left_input">
+                            <span class="tag">起点 </span>
+                            <select id="select_data_1">
+                                <option value="" disabled selected>选择对象标签</option>
+                                {% for i in labels %}
+                                <option value="{{ i }}">{{ i.name }} </option>
+                                {% endfor %}
+                            </select>
+{#                                <input id="local_object_data" runat="server" autocomplete="off" data-provide="typeahead" data-items="12" type="text" placeholder="输入对象标签" autocomplete="off">#}
+                            <input id="local_object_data" runat="server" autocomplete="off" data-provide="typeahead" data-items="12" type="text" placeholder="输入对象属性" autocomplete="off">
+                            <input id="local_object_data_2" type="text" placeholder="输入属性内容" autocomplete="off">
+                            <input type="reset" style="display:none;" >
+                        </div>
+                    </form>
+                </ul>
+                <ul class="submenu">
+                    <form onsubmit="return false">
+                        <div class="left_input">
+                            <span class="tag">终点 </span>
+                            <select id="select_data_2">
+                                <option value="" disabled selected>选择对象标签</option>
+                                {% for i in labels %}
+                                <option value="{{ i.name }}">{{ i.name }} </option>
+                                {% endfor %}
+                            </select>
+                            <input id="local_object_data2_1" runat="server" autocomplete="off" data-provide="typeahead" data-items="12" type="text" placeholder="输入对象属性" autocomplete="off">
+                            <input id="local_object_data2_2" type="text" placeholder="输入属性内容" autocomplete="off">
+                            <input type="reset" style="display:none;" >
+                        </div>
+                    </form>
+                </ul>
+                <ul class="submenu">
+                    <form onsubmit="return false">
+                        <div class="left_input_top">
+                            <span class="tag">权重 </span>
+                            <select id="select_data_weight">
+                                <option value="" disabled selected>选择加权属性</option>
+                                <option value="" >cost</option>
+                            </select>
+                        </div>
+                    </form>
+                </ul>
+                <ul class="submenu">
+                    <form id="k_value" onsubmit="return false" style="display: none">
+                        {% csrf_token %}
+                        <div class="left_input_top">
+                            <span class="tag">K值 </span>
+                            <input type="text" autocomplete="off" id="k">
+                        </div>
+                    </form>
+                </ul>
+                <ul class="submenu">
+                    <form onsubmit="return false">
+                        <div class="left_input_top">
+                            <button type="reset" class="highlight-btn" onclick="reset()">重置</button>
+                            <button type="submit" class="highlight-btn" onclick="path_search()">预览</button>
+                        </div>
+                    </form>
+                </ul>
+                </li>
+            <li class="active open">
+                <a href="javascript:side_click();" class="menu-dropdown">
+                    <i class="menu-icon fa fa-bar-chart-o"></i>
+                    <span class="menu-text"> 图统计 </span>
+                    <i class="menu-expand"></i>
+                </a>
+            </li>
+        </ul>
+            </div>
+        </div>
+    </div>
+    <svg id="div1"></svg>
+</div>
+
+<script src="{% static "js/jquery-2.2.1.min.js" %}"></script>
+<script src="{% static "js/bootstrap3-typeahead.js" %}"></script>
+<script src="{% static "js/d3.v5.min.js" %}"></script>
+<script src="{% static "js/d3.js" %}"></script>
+<script src="{% static "js/ajax.js" %}"></script>
+<script src="{% static "js/beyond.js" %}"></script>
+<script>
+$('#local_object_data').typeahead({
+    source: function (query, process) {
+        var label = $('#select_data_1 option:selected').text();
+        if(label=='' || label == '选择对象标签'){
+            alert('标签不能为空');
+        }else {
+            $.ajax({
+                type: "GET",
+                url: "/network/keys?label=" + encodeURIComponent(label),
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                timeout: 50000,
+                async: true,
+                success: function (data) {
+                    return process(data);
+                },
+                error: function (err) {
+                    console.log("error" + err);
+                }
+            });
+        }
+    },
+    autoSelect: false,
+    items: 8,
+});
+
+$('#local_object_data2_1').typeahead({
+    source: function (query, process) {
+        var label = $('#select_data_2 option:selected').text();
+        if(label=='' || label == '选择对象标签'){
+            alert('标签不能为空');
+        }else {
+            $.ajax({
+                type: "GET",
+                url: "/network/keys?label=" + encodeURIComponent(label),
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                timeout: 50000,
+                async: true,
+                success: function (data) {
+                    return process(data);
+                },
+                error: function (err) {
+                    console.log("error" + err);
+                }
+            });
+        }
+    },
+    autoSelect: false,
+    items: 8,
+});
+
+
+$('#algo').change(function(){
+    var algo = $(this).children('option:selected').val()
+    if(algo==2){
+        $('#k_value').show();
+    }else{
+        $('#k_value').hide();
+    }
+});
+
+function path_search(){
+    var algo = document.getElementById("algo").value;
+    var start_label = $('#select_data_1 option:selected').text();
+    var end_label = $('#select_data_2 option:selected').text();
+    var start_key = document.getElementById("local_object_data").value;
+    var end_key = document.getElementById("local_object_data2_1").value;
+    var start_content = document.getElementById("local_object_data_2").value;
+    var end_content = document.getElementById("local_object_data2_2").value;
+    var weight = $('#select_data_weight option:selected').text();
+
+    if(algo==1) {
+        if (weight == '选择加权属性') {
+            weight = ''
+        }
+        if (start_label && end_label && start_key && end_key && start_content && end_content) {
+            $.ajax({
+                url: "/network/shortpath",
+                type: "POST",
+                contentType: "application/x-www-form-urlencoded;charset=utf-8",
+                data: {
+                    'start_label': start_label,
+                    'end_label': end_label,
+                    'start_key': start_key,
+                    'end_key': end_key,
+                    'start_content': start_content,
+                    'end_content': end_content,
+                    'weight': weight
+                },
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    $("svg").empty();
+                    if (result[0] == '' && result[1] == '') {
+                        alert('没有查询结果');
+                    }
+                    ShowGraph(result[0], result[1], {{ keyslist|safe }});
+                },
+                error: function (msg) {
+                    console.log("error" + msg);
+                }
+            })
+        } else {
+            alert('节点信息不允许为空！')
+        }
+    }
+    if(algo==2){
+        var k = document.getElementById("k").value;
+        console.log(k);
+        if(weight == '选择加权属性'){weight=''}
+        if(start_label && end_label && start_key && end_key && start_content && end_content && k){
+            $.ajax({
+                url : "/network/ksp",
+                type : "POST",
+                contentType: "application/x-www-form-urlencoded;charset=utf-8",
+                data : {'start_label':start_label,'end_label':end_label,'start_key':start_key,'end_key':end_key,'start_content':start_content,'end_content':end_content,'weight':weight,'k':k},
+                dataType : "json",
+                success : function(result) {
+                    $("svg").empty();
+                    if (result[0] == '' && result[1] == '') {
+                        alert('没有查询结果');
+                    }
+                    ShowGraph(result[0], result[1], {{ keyslist|safe }});
+                },
+                error:function(msg){
+                    console.log("error"+msg);
+                }
+            })
+        }else{
+            alert('节点信息不允许为空！')
+        }
+    }
+}
+
+function reset() {
+    $("input[type=reset]").trigger("click");
+}
+
+</script>
+{% endblock %}

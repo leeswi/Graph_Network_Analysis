@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+{% block link %}
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static "css/data_text.css" %}">
+<link rel="stylesheet" href="{% static "css/BigData.css" %}">
+{% endblock %}
+{% block content %}
+<!--content开始-->
+<div class="data_content">
+{% comment %}    <div class="">
+        <form action="" method="post">
+            <img src="{% static "img/data_time.png" %}" alt="" class="fl">
+            <input type="url" id="demo-1" style="background: #04425f;width: 100px;" placeholder="输入数据库地址">
+            <button type="submit">连接</button>
+        </form>
+    </div>{% endcomment %}
+    <div class="data_info">
+        <div class="info_2 fl">
+            <div class="text_2">
+                <div class="fl">
+                    <img src="{% static "img/info_1.png" %}" alt="" class="fl">
+                    <div class="fl">
+                        <p>节点总数</p>
+                        <p>{{ nodesCounts }}</p>
+                    </div>
+                </div>
+                <div class="fl">
+                    <img src="{% static "img/info_2.png" %}" alt="" class="fl">
+                    <div class="fl">
+                        <p>标签数量</p>
+                        <p>{{ lablesCount }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="info_1 fl">
+            <div class="weather-box">
+                <div class="data">
+                    <p class="time" id="time">00:00:00</p>
+                    <p id="date"></p>
+                </div>
+            </div>
+        </div>
+        <div class="info_3 fr">
+            <div class="text_3">
+                <div class="fl">
+                    <img src="{% static "img/info_6.png" %}" alt="" class="fl">
+                    <div class="fl">
+                        <p>关系数量</p>
+                        <p>{{ relaCounts }}</p>
+                    </div>
+                </div>
+                <div class="fl">
+                    <img src="{% static "img/info_7.png" %}" alt="" class="fl">
+                    <div class="fl">
+                        <p>关系类型数量</p>
+                        <p>{{ relaTypeCounts }}</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="data_main">
+        <div class="main_left fl">
+            <div class="left_1">
+                <div class="main_title">
+                    <img src="{% static "img/title_1.png" %}" alt="">
+                    标签类型统计
+                </div>
+                <div id="chart_1" class="chart" style="width:100%;height:100%;"></div>
+            </div>
+            <div class="left_2">
+                <div class="main_title">
+                    <img src="{% static "img/title_2.png" %}" alt="">
+                    节点PR排名
+                </div>
+                <div class="choice">
+                    <label for="">类型：</label>
+                    <select name="" id="pagerank">
+                        {% for i in labels %}
+                             <option value="{{ i.name }}">{{ i.name }} </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div id="chart_2" class="pr_table">
+                    <table id="more" class="table table_pr">
+                        <thead>
+                        <tr>
+                            <th style="width: 18%">节点</th>
+                            <th>PR值</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="main_center fl">
+            <div class="center_text">
+                <div class="main_title">
+                    <img src="{% static "img/title_3.png" %}" alt="">
+                    通信网络图
+                </div>
+                <div id="container" style="width:100%;height:98%;"></div>
+            </div>
+        </div>
+        <div class="main_right fr">
+            <div class="right_1">
+                <div class="main_title">
+                    <img src="{% static "img/title_4.png" %}" alt="">
+                    网络特征参数
+                </div>
+                <ul class="danger_depart">
+                    <li class="danger_ico" style="background-image: url({% static "img/pic_ico_01.png" %}); background-position-x: 0px"></li>
+                    <li class="data_name">平均度</li>
+                    <li class="data data01">{{ degrees }}</li>
+                </ul>
+                <ul class="danger_depart">
+                    <li class="danger_ico" style="background-image: url({% static "img/pic_ico_02.png" %}); background-position-x: 0px"></li>
+                    <li class="data_name">平均聚类系数</li>
+                    <li class="data data01">{{ averageClusteringCoefficient }}</li>
+                </ul>
+                <ul class="danger_depart danger_depart01">
+                    <li class="danger_ico" style="background-image: url({% static "img/pic_ico_03.png" %}); background-position-x: 0px"></li>
+                    <li class="data_name">模块化</li>
+                    <li class="data data01" id="Louvai"></li>
+                </ul>
+                <ul class="danger_depart danger_depart01">
+                    <li class="danger_ico" style="background-image: url({% static "img/pic_ico_01.png" %}); background-position-x: 0px"></li>
+                    <li class="data_name">平均路径长度</li>
+                    <li class="data data01">xxx</li>
+                </ul>
+{#                <div id="chart_3" class="echart" style="width:100%;height: 100%;"></div>#}
+            </div>
+            <div class="right_2">
+                <div class="main_title">
+                    <img src="{% static "img/title_5.png" %}" alt="">
+                    台站设备统计
+                </div>
+                <div class="choice">
+                    <label ><a href="#" onclick="choose({{ labels_json }})">数据源选择</a></label>
+                </div>
+                <div id="chart4" class="echart"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="layouts" style="display:none">
+        <div class="layoutsMain">
+            <div class="title"></div>
+            <div class="main-wrapper">
+                <div class="checkboxwrapper">
+                </div>
+            </div>
+            <div class="btn-wrapper">
+                <a href="#" class="a-btn-01" onclick="sureBtn({{ labels_json }})">确定</a>
+                <a href="#" class="a-btn-02" onclick="delBtn()">取消</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--content结束-->
+
+
+<script src="{% static "js/bootstrap.min.js" %}"></script>
+<script src="{% static "js/echarts-all-3.js" %}"></script>
+<script src="{% static "js/echart.js" %}"></script>
+<script src="{% static "js/china.js" %}"></script>
+<script src="{% static "js/time.js" %}"></script>
+<script src="{% static "js/rem.js" %}"></script>
+<script src="{% static "js/foundation-datepicker.js" %}"></script>
+<script src="{% static "js/foundation-datepicker.zh-CN.js" %}"></script>
+<script src="{% static "js/dataTool.min.js" %}"></script>
+<script src="{% static "js/bmap.min.js" %}"></script>
+<script src="{% static "js/ajax.js" %}"></script>
+<script>
+$(function () {
+    echart_1({{ labels_json|safe }}, {{ lablesCount }});
+
+    var echart_2_label = $('#pagerank option:selected').val();
+    echart_2(echart_2_label,{{ keyslist|safe }});
+    $("#pagerank").on("change",function(){
+        var label = $('#pagerank option:selected').val();
+        echart_2(label,{{ keyslist|safe }});
+    });
+
+    echart_4('',{{ labels_json|safe }});
+
+    getLouvai();
+})
+</script>
+{% endblock %}
+{#</body>#}
+{#</html>#}

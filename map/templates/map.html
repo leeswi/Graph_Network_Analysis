@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block link %}
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static "css/map.css" %}" >
+<link rel="stylesheet" href="{% static "css/map_.css" %}" >
+{% endblock %}
+
+{% block content %}
+<!--content开始-->
+<div class="map_content">
+    <div class="left map_left">
+        <div class="map_top">
+            <ul>
+                <li>
+                    <div class="container">
+                        <input type="text" id="btn" placeholder="输入地名...">
+                        <div class="search"></div>
+                    </div>
+                </li>
+                <li class="active"><i class="glyphicon glyphicon-pencil"></i><a href="javascript:void (0)" class="active">图层选择：</a> </li>
+                <li>
+                    <select id="s1" name="oneclass" onchange="chooseLayer()">
+                        <option selected="selected" >--请选择--</option>
+                        <option >取消所有图层</option>
+                        <option >车站</option>
+                        <option >公园</option>
+                    </select>
+                </li>
+                <li><i class="glyphicon glyphicon-screenshot"></i><a href="javascript:void(0)">标记</a> </li>
+                <li><i class="glyphicon glyphicon-search"></i><a href="javascript:void (0)">搜索</a> </li>
+                <li><i class="glyphicon glyphicon-wrench"></i><a href="javascript:void (0)">工具</a> </li>
+                <li><i class="glyphicon glyphicon-fullscreen"></i><a href="javascript:void (0)">全屏</a> </li>
+            </ul>
+        </div>
+        <div  class="map_box" id="map_box"></div>
+    </div>
+    <div class="right map_right ">
+        <div class="map_right_top">
+            <ul><li class="li_active">预警信息</li>
+                <li>分类搜索</li>
+                <li>专题信息</li></ul>
+        </div>
+    </div>
+</div>
+<script src="{% static "js/jquery-2.2.1.min.js" %}"></script>
+<script src="{% static "js/bootstrap.min.js" %}"></script>
+<script src="{% static "js/map_load.js" %}"></script>
+<script src="{% static "js/map_control.js" %}"></script>
+<script src="{% static "js/jquery.mapPieMenu.min.js" %}"></script>
+<script>
+$(document).ready(function() {
+    $('#btn').bind('keydown', function (event) {
+        if (event.keyCode == "13") {
+            getPoint();
+        }
+    });
+});
+</script>
+{% endblock %}

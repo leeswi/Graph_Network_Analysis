@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% block link %}
+{% load staticfiles %}
+
+<link rel="stylesheet" href="{% static "css/project.css" %}" >
+{% endblock %}
+
+{% block content %}
+<div class="project_content">
+    <div class="dashboard">
+        <ul>
+            {% for i in project_list %}
+            <li class="c-col6">
+                <div>
+                    <a href="#">
+                        <h4 class="c-line-clamp">{{ i.project_name }}</h4>
+                        <p class="m-product-panel-list-note">{{ i.project_text }}</p>
+                        <ul class="m-product-panel-list-detail">
+                            <li>
+                                <span class="glyphicon glyphicon-font"></span>
+                                <span>算法：{{ i.project_algo.algo_name }}</span>
+                            </li>
+                            <li>
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span>布局：{{ i.project_layout }}</span>
+                            </li>
+{#                            <li>#}
+{#                                <span class="glyphicon glyphicon glyphicon-file"></span>#}
+{#                                <span>外部数据：{{ i.project_file }}</span>#}
+{#                            </li>#}
+                            <li>
+                                <span class="glyphicon glyphicon-calendar"></span>
+                                <span>创建日期：{{ i.project_date|date:"Y-m-d" }}</span>
+                            </li>
+                        </ul>
+                        <button onclick="project_del({{ i.id }})" type="button" class="btn btn-default">
+                            <span class="glyphicon glyphicon glyphicon-trash" aria-hidden="true"></span> 删除
+                        </button>
+                        <button onclick="" type="button" class="btn btn-default">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 设置
+                        </button>
+                        <button onclick="window.location.href='/project/analysis?id={{ i.id }}'" type="button" class="btn btn-default">
+                            <span class="glyphicon glyphicon glyphicon-open" aria-hidden="true"></span> 打开
+                        </button>
+                    </a>
+                </div>
+            </li>
+            {% endfor %}
+            <li class="c-col6">
+                <div class="gly-button">
+                    <button onclick="project_add()" class="gly-btn">
+                        <span class="glyphicon glyphicon-plus-sign" id="gly-add"></span>
+                    </button>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+{#弹出框#}
+<div class="cont">
+    <div class="pop-up">
+        <span class="close-pop"></span>
+        <h2 class="title">新建工程</h2>
+        <form action="project_add" method="post" class="pop-form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="set-div">
+                <div class="set-box">
+                    <label for="">工程名称</label>
+                    <input type="text" value="" name="project-name">
+                </div>
+                <div class="set-box">
+                    <label for="">工程描述</label>
+                    <textarea type="text" name="project-content"></textarea>
+                </div>
+                <div class="set-box">
+                    <label for="">选择算法</label>
+                    <select name="project-algo">
+                        {% for i in algo_list %}
+                        <option value="{{ i.algo_name }}">{{ i.algo_name }} </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="set-box">
+                    <label for="">选择可视化模板</label>
+                    <select name="project-vis">
+                        <option>D3力导图</option>
+                    </select>
+                </div>
+{#                <div class="set-box">#}
+{#                    <label for="">json数据源</label>#}
+{#                    <input type="file" value="" name="project-data">#}
+{#                </div>#}
+                <button class="add-btn" id="addSet"><img src="{% static "images/plus.png" %}" alt="">添加</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script src="{% static "js/jquery-2.2.1.min.js" %}"></script>
+<script src="{% static "js/ajax.js" %}"></script>
+<script src="{% static "js/project.js" %}"></script>
+{% endblock %}

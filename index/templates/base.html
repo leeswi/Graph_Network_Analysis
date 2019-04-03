@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{% static "css/foundation-datepicker.css" %}">
+    <link rel="stylesheet" href="{% static "css/bootstrap.css" %}" >
+    <link rel="stylesheet" href="{% static "css/common.css" %}">
+    <link rel="stylesheet" href="{% static "css/normalize.css" %}">
+    <link rel="stylesheet" href="{% static "css/font-awesome.min.css" %}" >
+    <script src="{% static "js/jquery-2.2.1.min.js" %}"></script>
+    <script src="{% static "js/common.js" %}"></script>
+    <!--[if lt IE 9]>
+    <script src="{% static "js/html5shiv.min.js" %}"></script>
+    <script src="{% static "js/respond.min.js" %}"></script>
+    <![endif]-->
+    {% block link %}
+    {% endblock %}
+</head>
+
+<body>
+<!--header开始-->
+<div class="header">
+    <div class="header_logo fl">
+        <a href="#"><img src="{% static "img/logo-2.png" %}" alt=""></a>
+    </div>
+    <div class="header_nav fl">
+        <ul>
+            <li>
+                <img src="{% static "img/nav_1.png" %}" alt="">
+                <a href="/" >数据概览</a>
+            </li>
+            <li>
+                <img src="{% static "img/nav_2.png" %}" alt="">
+                <a href="/project">项目管理</a>
+            </li>
+            <li>
+                <img src="{% static "img/nav_3.png" %}" alt="">
+                <a href="#">网络分析</a>
+                <ul>
+                    <li><a href="/path/path.html">最短路径</a></li>
+                    <li><a href="/path/relationship.html">关系发现</a></li>
+                </ul>
+            </li>
+            <li>
+                <img src="{% static "img/nav_4.png" %}" alt="">
+                <a href="/network">节点查询</a>
+            </li>
+            <li>
+                <img src="{% static "img/nav_5.png" %}" alt="">
+                <a href="/map/map.html">地图视图</a>
+            </li>
+            <li>
+                <img src="{% static "img/nav_7.png" %}" alt="">
+                <a href="#">统计图表</a>
+            </li>
+            <!--<li>-->
+                <!--<img src="img/nav_8.png" alt="">-->
+                <!--<a href="#">行业应用</a>-->
+            <!--</li>-->
+            <li>
+                <img src="{% static "img/nav_9.png" %}" alt="">
+                <a href="/path/index-manage.html">系统设置</a>
+            </li>
+        </ul>
+    </div>
+    <div class="header_myself fr">
+        <p>用户：{{ username }}</p>
+        <a href="{% url 'logout' %}">注销 &nbsp;<span class="caret"></span></a>
+    </div>
+</div>
+<!--header结束-->
+<!--content开始-->
+
+{% block content %}
+{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% block link %}
+{% load staticfiles %}
+
+<link rel="stylesheet" href="{% static "css/project.css" %}" >
+<link rel="stylesheet" href="{% static "css/beyond.css" %}" >
+<link rel="stylesheet" href="{% static "css/demo_button.css" %}" >
+<link rel="stylesheet" href="{% static "css/path.css" %}" >
+{% endblock %}
+
+{% block content %}
+<div class="project_content">
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="navbar-container">
+                <div class="sidebar-collapse" id="sidebar-collapse">
+                    <i class="collapse-icon fa fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main-container container-fluid">
+        <div class="page-container">
+            <div class="page-sidebar menu-compact" id="sidebar">
+                <ul class="nav sidebar-menu">
+                    <!--Dashboard-->
+                    <li class="active open">
+                        <a href="javascript:side_click();" class="menu-dropdown">
+                            <i class="menu-icon fa fa-pencil-square-o"></i>
+                            <span class="menu-text"> 基本信息 </span>
+                            <i class="menu-expand"></i>
+                        </a>
+                        <ul class="submenu">
+                            <form onsubmit="return false">
+                                <div class="left_input_head">
+                                    <span class="head-tag">项目名称：{{ project_list.project_name }}</span>
+                                    <span class="head-tag">项目算法：{{ project_list.project_algo.algo_name }}</span>
+                                    <span class="head-tag">创建日期：{{ project_list.project_date|date:"Y-m-d" }}</span>
+                                </div>
+                            </form>
+                        </ul>
+                    </li>
+                    <li class="active open">
+                        <a href="javascript:side_click();" class="menu-dropdown">
+                            <i class="menu-icon fa fa-paperclip"></i>
+                            <span class="menu-text"> 参数输入 </span>
+                            <i class="menu-expand"></i>
+                        </a>
+                        {% for key,val in algo_mark.items %}
+                            <ul class="submenu">
+                                {% if key == 'SL' or key == 'EL' %}
+                                    <form onsubmit="return false">
+                                        <div class="left_input_top">
+                                            <span class="tag">{{ key }} </span>
+                                            {% for i in val %}
+                                                <select id="{{ i.value }}">
+                                                    <option value="" disabled selected>选择对象标签</option>
+                                                    {% for j in labels %}
+                                                    <option value="{{ j.name }}">{{ j.name }} </option>
+                                                    {% endfor %}
+                                                </select>
+                                            {% endfor %}
+                                        </div>
+                                    </form>
+                                {% elif key == 'SNP' or key == 'ENP' %}
+                                    <form onsubmit="return false">
+                                        <div class="left_input_top">
+                                        {% for i in val %}
+                                            <input id="{{ i.value }}" runat="server" autocomplete="off" data-provide="typeahead" data-items="12" type="text" placeholder="输入对象属性" autocomplete="off">
+                                        {% endfor %}
+                                        </div>
+                                    </form>
+                                {% elif key == 'SNC' or key == 'ENC' %}
+                                    <form onsubmit="return false">
+                                        <div class="left_input_top">
+                                        {% for i in val %}
+                                            <input id="{{ i.value }}" type="text" placeholder="输入属性内容" autocomplete="off">
+                                        {% endfor %}
+                                        </div>
+                                    </form>
+                                {% elif key == 'R' or key == 'W' or key == 'CONF' %}
+                                    <form onsubmit="return false">
+                                        <div class="left_input_top">
+                                            <span class="tag">{{ key }}</span>
+                                            {% for i in val %}
+                                                <input id="{{ i.value }}" type="text" placeholder="{{ i.value }}" autocomplete="off">
+                                            {% endfor %}
+                                        </div>
+                                    </form>
+                                {% elif key == 'SN' or key == 'EN' %}
+                                    <form onsubmit="return false">
+                                        <div class="left_input_top">
+                                            <span class="tag">{{ key }}</span>
+                                            <select id="{{ key }}_label">
+                                                <option value="" disabled selected>选择对象标签</option>
+                                                {% for i in labels %}
+                                                <option value="{{ i.name }}">{{ i.name }} </option>
+                                                {% endfor %}
+                                            </select>
+                                            <input id="{{ key }}_pro" runat="server" autocomplete="off" data-provide="typeahead" data-items="12" type="text" placeholder="输入对象属性" autocomplete="off">
+                                            <input id="{{ key }}_content" type="text" placeholder="输入属性内容" autocomplete="off">
+                                        </div>
+                                    </form>
+                                {% endif %}
+                            </ul>
+                        {% endfor %}
+
+                        <ul class="submenu">
+                            <form onsubmit="return false">
+                                <div class="left_input_top">
+                                    <button type="reset" class="highlight-btn" onclick="reset()">重置</button>
+                                    <button type="submit" class="highlight-btn" onclick="start({{ json_algo_mark }},{{ project_list.id }})">预览</button>
+                                </div>
+                            </form>
+                        </ul>
+                        </li>
+                    <li class="active open">
+                        <a href="javascript:side_click();" class="menu-dropdown">
+                            <i class="menu-icon fa fa-bar-chart-o"></i>
+                            <span class="menu-text"> 图统计 </span>
+                            <i class="menu-expand"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static "js/jquery-2.2.1.min.js" %}"></script>
+<script src="{% static "js/bootstrap3-typeahead.js" %}"></script>
+<script src="{% static "js/beyond.js" %}"></script>
+<script src="{% static "js/ajax.js" %}"></script>
+<script src="{% static "js/project.js" %}"></script>
+{% endblock %}
