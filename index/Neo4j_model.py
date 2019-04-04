@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from py2neo import Graph,RelationshipMatcher
 import re
-from path.models import labels_key
+from project.models import project_module
 class Neo4j_Object(object):
 
     def __init__(self,url='http://localhost:11012',user='neo4j',pwd='123'):
@@ -205,6 +205,38 @@ class Neo4j_Object(object):
         res = res[0]['communityCount']
         return res
 
-    def ProjectRunCql(self,algo):
+    def ProjectRunCql(self,algo,algo_id):
         cql = algo
-        return(200)
+        print(cql)
+        try:
+            res = self.graph.run(cql).data()
+        except Exception as e:
+            print(e)
+            return e
+        else:
+            project_list = project_module.objects.get(id=algo_id)
+            algo_return = project_list.project_algo.algo_return
+            print(algo_return)
+            if(algo_return=='节点'):
+                rela = self.node_to_rela(res)
+                return rela
+            elif(algo_return=='关系'):
+                rela = self.rawrela_to_rela(res)
+                return rela
+
+    def node_to_rela(self,node_object): #节点转关系
+        relmatch = RelationshipMatcher(self.graph)
+        rela = []
+        for i in range(len(node_object) - 1):
+            temp = (list(relmatch.match(nodes=(node_object[i]['node'], node_object[i + 1]['node']))))
+            for j in temp:
+                rela.append(j)
+        return rela
+
+    def rawrela_to_rela(self,raw_rela):
+        input = []
+        for i in raw_rela:
+            for j in i['r']:
+                if j not in input:
+                    input.append(j)
+        return input

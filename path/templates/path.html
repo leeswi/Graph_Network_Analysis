@@ -27,94 +27,94 @@
         <div class="page-container">
             <div class="page-sidebar menu-compact" id="sidebar">
                 <ul class="nav sidebar-menu">
-            <!--Dashboard-->
-            <li class="active open">
-                <a href="javascript:side_click();" class="menu-dropdown">
-                    <i class="menu-icon fa fa-gavel"></i>
-                    <span class="menu-text"> 参数输入 </span>
-                    <i class="menu-expand"></i>
-                </a>
-                <ul class="submenu">
-                    <form onsubmit="return false">
-                        <div class="left_input_top">
-                            <span class="tag">算法 </span>
-                            <select id="algo">
-                                <option value="1">单源最短路径</option>
-                                <option value="2">KSP最短路径</option>
-                            </select>
-                        </div>
-                    </form>
+                    <!--Dashboard-->
+                    <li class="active open">
+                        <a href="javascript:side_click();" class="menu-dropdown">
+                            <i class="menu-icon fa fa-gavel"></i>
+                            <span class="menu-text"> 参数输入 </span>
+                            <i class="menu-expand"></i>
+                        </a>
+                        <ul class="submenu">
+                            <form onsubmit="return false">
+                                <div class="left_input_top">
+                                    <span class="tag">算法 </span>
+                                    <select id="algo">
+                                        <option value="1">单源最短路径</option>
+                                        <option value="2">KSP最短路径</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </ul>
+                        <ul class="submenu">
+                            <form onsubmit="return false">
+                                <div class="left_input">
+                                    <span class="tag">起点 </span>
+                                    <select id="select_data_1">
+                                        <option value="" disabled selected>选择对象标签</option>
+                                        {% for i in labels %}
+                                        <option value="{{ i }}">{{ i.name }} </option>
+                                        {% endfor %}
+                                    </select>
+        {#                                <input id="local_object_data" runat="server" autocomplete="off" data-provide="typeahead" data-items="12" type="text" placeholder="输入对象标签" autocomplete="off">#}
+                                    <input id="local_object_data" runat="server" autocomplete="off" data-provide="typeahead" data-items="12" type="text" placeholder="输入对象属性" autocomplete="off">
+                                    <input id="local_object_data_2" type="text" placeholder="输入属性内容" autocomplete="off">
+                                    <input type="reset" style="display:none;" >
+                                </div>
+                            </form>
+                        </ul>
+                        <ul class="submenu">
+                            <form onsubmit="return false">
+                                <div class="left_input">
+                                    <span class="tag">终点 </span>
+                                    <select id="select_data_2">
+                                        <option value="" disabled selected>选择对象标签</option>
+                                        {% for i in labels %}
+                                        <option value="{{ i.name }}">{{ i.name }} </option>
+                                        {% endfor %}
+                                    </select>
+                                    <input id="local_object_data2_1" runat="server" autocomplete="off" data-provide="typeahead" data-items="12" type="text" placeholder="输入对象属性" autocomplete="off">
+                                    <input id="local_object_data2_2" type="text" placeholder="输入属性内容" autocomplete="off">
+                                    <input type="reset" style="display:none;" >
+                                </div>
+                            </form>
+                        </ul>
+                        <ul class="submenu">
+                            <form onsubmit="return false">
+                                <div class="left_input_top">
+                                    <span class="tag">权重 </span>
+                                    <select id="select_data_weight">
+                                        <option value="" disabled selected>选择加权属性</option>
+                                        <option value="" >cost</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </ul>
+                        <ul class="submenu">
+                            <form id="k_value" onsubmit="return false" style="display: none">
+                                {% csrf_token %}
+                                <div class="left_input_top">
+                                    <span class="tag">K值 </span>
+                                    <input type="text" autocomplete="off" id="k">
+                                </div>
+                            </form>
+                        </ul>
+                        <ul class="submenu">
+                            <form onsubmit="return false">
+                                <div class="left_input_top">
+                                    <button type="reset" class="highlight-btn" onclick="reset()">重置</button>
+                                    <button type="submit" class="highlight-btn" onclick="path_search()">预览</button>
+                                </div>
+                            </form>
+                        </ul>
+                        </li>
+                    <li class="active open">
+                        <a href="javascript:side_click();" class="menu-dropdown">
+                            <i class="menu-icon fa fa-bar-chart-o"></i>
+                            <span class="menu-text"> 图统计 </span>
+                            <i class="menu-expand"></i>
+                        </a>
+                    </li>
                 </ul>
-                <ul class="submenu">
-                    <form onsubmit="return false">
-                        <div class="left_input">
-                            <span class="tag">起点 </span>
-                            <select id="select_data_1">
-                                <option value="" disabled selected>选择对象标签</option>
-                                {% for i in labels %}
-                                <option value="{{ i }}">{{ i.name }} </option>
-                                {% endfor %}
-                            </select>
-{#                                <input id="local_object_data" runat="server" autocomplete="off" data-provide="typeahead" data-items="12" type="text" placeholder="输入对象标签" autocomplete="off">#}
-                            <input id="local_object_data" runat="server" autocomplete="off" data-provide="typeahead" data-items="12" type="text" placeholder="输入对象属性" autocomplete="off">
-                            <input id="local_object_data_2" type="text" placeholder="输入属性内容" autocomplete="off">
-                            <input type="reset" style="display:none;" >
-                        </div>
-                    </form>
-                </ul>
-                <ul class="submenu">
-                    <form onsubmit="return false">
-                        <div class="left_input">
-                            <span class="tag">终点 </span>
-                            <select id="select_data_2">
-                                <option value="" disabled selected>选择对象标签</option>
-                                {% for i in labels %}
-                                <option value="{{ i.name }}">{{ i.name }} </option>
-                                {% endfor %}
-                            </select>
-                            <input id="local_object_data2_1" runat="server" autocomplete="off" data-provide="typeahead" data-items="12" type="text" placeholder="输入对象属性" autocomplete="off">
-                            <input id="local_object_data2_2" type="text" placeholder="输入属性内容" autocomplete="off">
-                            <input type="reset" style="display:none;" >
-                        </div>
-                    </form>
-                </ul>
-                <ul class="submenu">
-                    <form onsubmit="return false">
-                        <div class="left_input_top">
-                            <span class="tag">权重 </span>
-                            <select id="select_data_weight">
-                                <option value="" disabled selected>选择加权属性</option>
-                                <option value="" >cost</option>
-                            </select>
-                        </div>
-                    </form>
-                </ul>
-                <ul class="submenu">
-                    <form id="k_value" onsubmit="return false" style="display: none">
-                        {% csrf_token %}
-                        <div class="left_input_top">
-                            <span class="tag">K值 </span>
-                            <input type="text" autocomplete="off" id="k">
-                        </div>
-                    </form>
-                </ul>
-                <ul class="submenu">
-                    <form onsubmit="return false">
-                        <div class="left_input_top">
-                            <button type="reset" class="highlight-btn" onclick="reset()">重置</button>
-                            <button type="submit" class="highlight-btn" onclick="path_search()">预览</button>
-                        </div>
-                    </form>
-                </ul>
-                </li>
-            <li class="active open">
-                <a href="javascript:side_click();" class="menu-dropdown">
-                    <i class="menu-icon fa fa-bar-chart-o"></i>
-                    <span class="menu-text"> 图统计 </span>
-                    <i class="menu-expand"></i>
-                </a>
-            </li>
-        </ul>
             </div>
         </div>
     </div>

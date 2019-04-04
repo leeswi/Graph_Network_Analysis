@@ -29,17 +29,22 @@ function project_del(id){
     })
 }
 
-function start(t,id){
+function start(t,id,keylist){
     // console.log(t);
     var input_list = ['SNP','ENP','SNC','ENC','R','W','CONF'];
-    var select_list = ['SL','EL'];
+    var select_list = ['SL','EL','L'];
     var mix_list = ['SN','EN'];
     post_data = {};
     post_data['id'] = id;
     $.each(t,function (key,val){
+        console.log(t);
         if(input_list.indexOf(key)>-1){
             for(let i in val){
-                post_data[val[i]['init']]=$("#"+val[i]['value']).val();
+                if(key=='CONF'){
+                    post_data[val[i]['init']]=val[i]['value']+":"+$("#"+val[i]['value']).val();
+                }else {
+                    post_data[val[i]['init']] = $("#" + val[i]['value']).val();
+                }
             }
         }
         else if(select_list.indexOf(key)>-1){
@@ -49,29 +54,34 @@ function start(t,id){
         }
         else if(mix_list.indexOf(key)>-1){
             for(let i in val){
-                if(val[i]['value']=='' || $("#"+key+"_label option:selected").val()=='' || $("#"+key+"_pro").val()==''){
+                if(val[i]['value']=='' || $("#"+key+"_"+val[i]['value']+"_label option:selected").val()=='' || $("#"+key+"_"+val[i]['value']+"_pro").val()==''){
                     alert('表单不允许为空！');
                     post_data = {};
                     return false;
                 }else{
-                    post_data[val[i]['init']]=val[i]['value']+":"+$("#"+key+"_label option:selected").val()+"{"+$("#"+key+"_pro").val()+":\""+$("#"+key+"_content").val()+"\"}";
+                    post_data[val[i]['init']]=val[i]['value']+":"+$("#"+key+"_"+val[i]['value']+"_label option:selected").val()+"{"+$("#"+key+"_"+val[i]['value']+"_pro").val()+":\""+$("#"+key+"_"+val[i]['value']+"_content").val()+"\"}";
                 }
             }
         }
     });
     if(JSON.stringify(post_data) != '{}'){
-        ajax_start(post_data);
+        ajax_start(post_data,keylist);
     }
 }
 
-function ajax_start(post_data){
+function ajax_start(post_data,keylist){
     $.ajax({
         url : "project_start",
         data: post_data,
         type: "POST",
         dataType: "json",
-        success: function(data){
-            console.log(data);
+        timeout: 3000,
+        success: function(result){
+            $("svg").empty();
+            if (result[0] == '' && result[1] == '') {
+                alert('没有查询结果');
+            }
+            ShowGraph(result[0], result[1], keylist);
         },
         error: function (msg) {
             console.log("error" + msg);

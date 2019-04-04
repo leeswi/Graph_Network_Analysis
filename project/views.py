@@ -1,8 +1,9 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from .models import algo_module
-from .models import project_module
+from .models import algo_module,project_module
+from path.models import labels_key
 from index.Neo4j_model import Neo4j_Object
+from network.views import getJson
 import re,json
 # Create your views here.
 def project(request):
@@ -27,6 +28,7 @@ def analysis(request):
         project_list = project_module.objects.get(id=project_id)
         algo_mark = get_mark(project_list.project_algo.algo_content)
         json_algo_mark =json.dumps(algo_mark)
+        keyslist = list(labels_key.objects.all().values())
         return render(request, 'analysis.html', locals())
 
 def pro_manage(request,project_manage):
@@ -67,8 +69,9 @@ def pro_manage(request,project_manage):
             if(key!='id'):
                 algo = algo.replace(key,mark[key])
         graph = Neo4j_Object()
-        res = graph.ProjectRunCql(algo)
-        return HttpResponse(200)
+        res = graph.ProjectRunCql(algo,mark['id']) #获取运行结果
+        graph = getJson(res) #数据格式处理
+        return HttpResponse(json.dumps(graph))
 
 def get_mark(algo):
     pattern1 = re.compile(u'<[A-Z+]*>[0-9A-Za-z]*</[A-Z]*>')

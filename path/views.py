@@ -79,9 +79,10 @@ def Manage(request,Manage):
     if (Manage == 'algoadd'):
         name = request.POST.get('algoname', '')
         content = request.POST.get('algocontent', '')
+        ret = request.POST.get('return_value','')
         if (name and content):
             try:
-                algo_module.objects.create(algo_name=name, algo_content=content)
+                algo_module.objects.create(algo_name=name, algo_content=content,algo_return=ret)
             except Exception as e:
                 error = "创建失败"
                 print(e)

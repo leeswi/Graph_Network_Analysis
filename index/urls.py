@@ -6,5 +6,5 @@ from . import views
 urlpatterns = [
     # 首页的URL
     path('', views.index),
-    path('favicon.ico',RedirectView.as_view(url=r'static/img/favicon.ico')),
+    # path('favicon.ico',RedirectView.as_view(url=r'static/img/favicon.ico')),
 ]

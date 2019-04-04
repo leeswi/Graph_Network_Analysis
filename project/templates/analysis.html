@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="{% static "css/beyond.css" %}" >
 <link rel="stylesheet" href="{% static "css/demo_button.css" %}" >
 <link rel="stylesheet" href="{% static "css/path.css" %}" >
+<link rel="stylesheet" href="{% static "css/graph.css" %}" >
 {% endblock %}
 
 {% block content %}
@@ -48,7 +49,7 @@
                         </a>
                         {% for key,val in algo_mark.items %}
                             <ul class="submenu">
-                                {% if key == 'SL' or key == 'EL' %}
+                                {% if key == 'SL' or key == 'EL' or key == 'L' %}
                                     <form onsubmit="return false">
                                         <div class="left_input_top">
                                             <span class="tag">{{ key }} </span>
@@ -91,14 +92,16 @@
                                     <form onsubmit="return false">
                                         <div class="left_input_top">
                                             <span class="tag">{{ key }}</span>
-                                            <select id="{{ key }}_label">
-                                                <option value="" disabled selected>选择对象标签</option>
-                                                {% for i in labels %}
-                                                <option value="{{ i.name }}">{{ i.name }} </option>
-                                                {% endfor %}
-                                            </select>
-                                            <input id="{{ key }}_pro" runat="server" autocomplete="off" data-provide="typeahead" data-items="12" type="text" placeholder="输入对象属性" autocomplete="off">
-                                            <input id="{{ key }}_content" type="text" placeholder="输入属性内容" autocomplete="off">
+                                            {% for i in val %}
+                                                <select id="{{ key }}_{{ i.value }}_label">
+                                                    <option value="" disabled selected>选择对象标签</option>
+                                                    {% for j in labels %}
+                                                    <option value="{{ j.name }}">{{ j.name }} </option>
+                                                    {% endfor %}
+                                                </select>
+                                                <input id="{{ key }}_{{ i.value }}_pro" runat="server" autocomplete="off" data-provide="typeahead" data-items="12" type="text" placeholder="输入对象属性" autocomplete="off">
+                                                <input id="{{ key }}_{{ i.value }}_content" type="text" placeholder="输入属性内容" autocomplete="off">
+                                            {% endfor %}
                                         </div>
                                     </form>
                                 {% endif %}
@@ -109,7 +112,7 @@
                             <form onsubmit="return false">
                                 <div class="left_input_top">
                                     <button type="reset" class="highlight-btn" onclick="reset()">重置</button>
-                                    <button type="submit" class="highlight-btn" onclick="start({{ json_algo_mark }},{{ project_list.id }})">预览</button>
+                                    <button type="submit" class="highlight-btn" onclick="start({{ json_algo_mark }},{{ project_list.id }},{{ keyslist|safe }})">预览</button>
                                 </div>
                             </form>
                         </ul>
@@ -125,11 +128,14 @@
             </div>
         </div>
     </div>
+    <svg id="div1"></svg>
 </div>
 
 <script src="{% static "js/jquery-2.2.1.min.js" %}"></script>
 <script src="{% static "js/bootstrap3-typeahead.js" %}"></script>
 <script src="{% static "js/beyond.js" %}"></script>
 <script src="{% static "js/ajax.js" %}"></script>
+<script src="{% static "js/d3.v5.min.js" %}"></script>
+<script src="{% static "js/d3.js" %}"></script>
 <script src="{% static "js/project.js" %}"></script>
 {% endblock %}
