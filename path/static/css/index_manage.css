@@ -77,6 +77,9 @@
     8px 0px 10px #034c6a inset; */
     border: 2px #000 solid !important;
     font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .table_style a{
     margin-right: 10px;

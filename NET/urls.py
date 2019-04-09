@@ -24,4 +24,5 @@ urlpatterns = [
     path('path/',include('path.urls')),
     path('map/',include('map.urls')),
     path('project/',include('project.urls')),
+    path('charts/',include('charts.urls')),
 ]

@@ -7,4 +7,3 @@ urlpatterns = [
     path('analysis',views.analysis),
     path('<project_manage>', views.pro_manage),
 ]
-# -*- coding: utf-8 -*-

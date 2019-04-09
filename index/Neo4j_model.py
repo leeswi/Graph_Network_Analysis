@@ -43,7 +43,7 @@ class Neo4j_Object(object):
 
     #查询所有关系
     def GetRela(self):
-        cql = "MATCH (n)-[r]->(m) return DISTINCT type(r)"
+        cql = "MATCH (n)-[r]->(m) return DISTINCT type(r) as relaType"
         res = self.graph.run(cql).data()
         if res:
             return res
@@ -216,7 +216,7 @@ class Neo4j_Object(object):
         else:
             project_list = project_module.objects.get(id=algo_id)
             algo_return = project_list.project_algo.algo_return
-            print(algo_return)
+            # print(algo_return)
             if(algo_return=='节点'):
                 rela = self.node_to_rela(res)
                 return rela
@@ -240,3 +240,140 @@ class Neo4j_Object(object):
                 if j not in input:
                     input.append(j)
         return input
+
+    #中心性算法
+    def closeness(self,label,link,property):
+        cql = '''
+        CALL algo.closeness.stream('%s', '%s')
+        YIELD nodeId, centrality
+        RETURN algo.getNodeById(nodeId).%s AS node, nodeId AS id,centrality
+        ORDER BY centrality DESC;
+        ''' %(label,link,property)
+        res = self.graph.run(cql).data()
+        return res
+
+    def harmonic_closeness(self, label, link, property):
+        cql = '''
+        CALL algo.closeness.harmonic.stream('%s', '%s') YIELD nodeId, centrality
+        RETURN algo.getNodeById(nodeId).%s AS node, nodeId AS id,centrality
+        ORDER BY centrality DESC
+        ''' %(label,link,property)
+        res = self.graph.run(cql).data()
+        return res
+
+    def PageRank(self, label, link, property):
+        cql = '''
+        CALL algo.pageRank.stream('%s', '%s', {
+            iterations:20, dampingFactor:0.85, weightProperty: "weight"
+        })
+        YIELD nodeId, score
+        RETURN algo.getNodeById(nodeId).%s AS node, nodeId AS id, score as centrality
+        ORDER BY score DESC
+        ''' %(label,link,property)
+        res = self.graph.run(cql).data()
+        return res
+
+    def ArticleRank(self, label, link, property):
+        cql = '''
+        CALL algo.articleRank.stream('%s', '%s', {iterations:20, dampingFactor:0.85})
+        YIELD nodeId, score
+        RETURN algo.getNodeById(nodeId).%s AS node, nodeId AS id, score as centrality
+        ORDER BY score DESC
+        ''' %(label,link,property)
+        res = self.graph.run(cql).data()
+        return res
+
+    def eigenvector(self, label, link, property):
+        cql = '''
+        CALL algo.eigenvector.stream('%s', '%s', {normalization: "max"})
+        YIELD nodeId, score
+        RETURN algo.getNodeById(nodeId).%s AS node, nodeId AS id, score as centrality
+        ORDER BY score DESC
+        ''' %(label,link,property)
+        res = self.graph.run(cql).data()
+        return res
+
+    #社区检测算法
+    def LPA(self,label,link,property,name):
+        cql = '''
+        CALL algo.labelPropagation.stream("%s", "%s",{direction: "OUTGOING", iterations: 10})
+        YIELD nodeId,label
+        RETURN algo.getNodeById(nodeId).%s as name,label as community
+        ''' % (label, link, property)
+        res = self.graph.run(cql).data()
+        if(name):
+            community_list = []
+            for i in res:
+                if(i['name']==name):
+                    community = i['community']
+                    break
+            for j in res:
+                if(j['community']==community):
+                    community_list.append(j)
+            return community_list
+        return res
+
+    def Louvain(self,label,link,property,name):
+        cql = '''
+        CALL algo.louvain.stream('%s', '%s', {includeIntermediateCommunities: true})
+        YIELD nodeId, communities
+        RETURN algo.getNodeById(nodeId).%s as name,communities as community
+        ''' % (label, link, property)
+        res = self.graph.run(cql).data()
+        if (name):
+            community_list = []
+            for i in res:
+                if (i['name'] == name):
+                    community = i['community']
+                    break
+            for j in res:
+                if (j['community'] == community):
+                    community_list.append(j)
+            return community_list
+        return res
+
+    def UnionFind(self,label,link,property,name):
+        cql = '''
+        CALL algo.unionFind.stream('%s', '%s', {})
+        YIELD nodeId,setId
+        RETURN algo.getNodeById(nodeId).%s AS name,setId AS community
+        ''' % (label, link, property)
+        res = self.graph.run(cql).data()
+        if (name):
+            community_list = []
+            for i in res:
+                if (i['name'] == name):
+                    community = i['community']
+                    break
+            for j in res:
+                if (j['community'] == community):
+                    community_list.append(j)
+            return community_list
+        return res
+    
+    def SCC(self,label,link,property,name):
+        cql = '''
+        CALL algo.scc('%s','%s', {write:true,partitionProperty:'partition'})
+        YIELD loadMillis, computeMillis, writeMillis, setCount, maxSetSize, minSetSize;
+        ''' % (label, link)
+        cql1 = '''
+        MATCH (u:%s)
+        RETURN u.partition as community,u.%s as name
+        '''  %(label,property)
+        cql2 = '''
+        MATCH (u:%s) remove u.partition
+        ''' % (label)
+        res = self.graph.run(cql).data()
+        res1 = self.graph.run(cql1).data()
+        res2 = self.graph.run(cql2).data()
+        if (name):
+            community_list = []
+            for i in res1:
+                if (i['name'] == name):
+                    community = i['community']
+                    break
+            for j in res1:
+                if (j['community'] == community):
+                    community_list.append(j)
+            return community_list
+        return res1

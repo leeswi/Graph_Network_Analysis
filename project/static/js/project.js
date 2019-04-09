@@ -3,6 +3,19 @@ $('.close-pop').on('click', function () {
     $(this).parent().parent().hide().find('.cont-div').attr('style', 'visibility: hidden');
 });
 
+//选项卡间距
+var screen_width = $(window).width()-40;
+var margin_num = Math.floor(screen_width/300);
+var all_margin = screen_width-300*(margin_num);
+var margin_right = all_margin/margin_num;
+while(margin_right<20){
+    margin_num = margin_num-1;
+    all_margin = screen_width-300*(margin_num);
+    margin_right = all_margin/margin_num;
+}
+margin_top = 0.8*margin_right;
+$('.c-col6').css('margin-right',margin_right);
+
 function project_add(){
     $('.cont').attr('style', 'visibility: visible').find('.pop-up')
         .attr('style', 'visibility: visible').siblings()
@@ -21,7 +34,7 @@ function project_del(id){
         async: false,
         success: function (result) {
             alert(result);
-            $(".dl").load(location.href+" .dl");
+            $(".dashboard").load(location.href+" .dashboard");
         },
         error: function (msg) {
             alert("error" + msg);

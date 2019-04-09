@@ -1,0 +1,346 @@
+.charts_content{
+    /*overflow-x: hidden;*/
+    background-color: #081832;
+    padding-top: 0px;
+    width: 100%;
+    height: calc(100% - 80px);
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    outline: none;
+}
+.box-left {
+    width: 28%;
+    height: 100%;
+    background: url(../images/line_img.png) top right repeat-y;
+    flex-grow: 1;
+}
+.box-center {
+    width: 44%;
+    height: 100%;
+    /*    background: green;*/
+}
+.box-right {
+    width: 28%;
+    height: 100%;
+    background: url(../images/line_img.png) top left repeat-y;
+}
+.center-top {
+    width: 100%;
+    height: 65.9%;
+    position: relative;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.center-bottom {
+    width: 100%;
+    height: 34%;
+    position: relative;
+}
+.left-top {
+    width: 100%;
+    margin-left: 10px;
+    position: relative;
+}
+
+.left-top>.current-num {
+    width: 4.9rem;
+    height: 1.8rem;
+    position: absolute;
+    margin: auto;
+    top: 1rem;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: url(../images/border_bg01.png) top left no-repeat;
+    background-size: 100% 100%;
+}
+
+.left-top>.left-title{
+    width: 180px;
+    height: 35px;
+    line-height: 33px;
+    background-color: #2C58A6;
+    border-radius: 18px;
+    position: absolute;
+    top: -12px;
+    left:50%;
+    margin-left: -90px;
+    color:#fff;
+    font-size: 18px;
+    font-weight: 600;
+    box-sizing: border-box;
+    padding-left: 45px;
+    z-index: 1000;
+}
+.left-center {
+    width: 100%;
+    height: 55%;
+    position: relative;
+}
+.left-bottom {
+    width: 100%;
+    height: 37%;
+    position: relative;
+    top: 30px;
+}
+.data_chart{
+    width: 96%;
+    margin-left: 2%;
+    height: 90%;
+    padding-top: 2%;
+}
+.title-box {
+    width: 4.9rem;
+    height: 0.42rem;
+    background: url(../images/box_title.png) top left no-repeat;
+    background-size: 100% 100%;
+    margin: auto;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    position: relative;
+}
+
+.title-box>h6,
+.title-box>p {
+    font-size: 0.2rem;
+    color: white;
+    height: 0.42rem;
+    line-height: 0.42rem;
+    margin-left: 0.4rem;
+}
+
+.title-box>p>span {
+    cursor: pointer;
+    color: rgba(255, 255, 255, .6);
+}
+
+.title-box>p>span.active {
+    color: rgba(255, 255, 255, 1);
+}
+
+.line-img {
+    width: 1px;
+    height: 0.2rem;
+    margin: 0 10px;
+}
+
+.title-box>.line-img {
+    position: absolute;
+    right: 1.3rem;
+}
+
+.title-box>button {
+    font-size: 0.18rem;
+    border: none;
+    background: transparent;
+    color: #cdddf7;
+    height: 0.42rem;
+    position: absolute;
+    right: 0.6rem;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    cursor: pointer;
+}
+
+.title-box>button:hover {
+    color: white;
+}
+
+.title-box>button>img {
+    width: 0.2rem;
+    height: 0.2rem;
+    margin-right: 5px;
+}
+
+.chart-box {
+    position: absolute;
+    top: 0.6rem;
+    bottom: 0;
+    width: 90%;
+    margin: auto;
+    left: 0;
+    right: 0;
+    height: auto;
+}
+
+.chart-box-right {
+    position: absolute;
+    top: 0.6rem;
+    bottom: 0;
+    width: 95%;
+    margin: auto;
+    left: 0.2rem;
+    height: auto;
+}
+.filter-con {
+    width: 100%;
+    height: 0.4rem;
+    position: absolute;
+    float: left;
+    top: 10px;
+    left: 0;
+    display: none;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    /*    visibility: hidden;*/
+    z-index: 999;
+}
+
+.select {
+    width: 1.6rem;
+    height: 0.4rem;
+    position: relative;
+    font-size: 0.18rem;
+    color: #cdddf7;
+    outline: none;
+}
+
+.select-div {
+    box-sizing: border-box;
+    width: 1.47rem;
+    height: 0.4rem;
+    line-height: 0.4rem;
+    border: 1px solid #0E94EA;
+    background: url(../images/arrow.png) 95% center no-repeat;
+    padding-left: 10px;
+    cursor: default;
+    position: relative;
+    color: #cdddf7;
+    appearance:none;
+    -moz-appearance:none;
+    -webkit-appearance:none;
+}
+
+.select-div-right {
+    box-sizing: border-box;
+    width: 1rem;
+    height: 0.4rem;
+    line-height: 0.4rem;
+    border: 1px solid #0E94EA;
+    background: url(../images/arrow.png) 95% center no-repeat;
+    padding-left: 10px;
+    padding-right: 25px;
+    cursor: default;
+    position: relative;
+    color: #cdddf7;
+    appearance:none;
+    -moz-appearance:none;
+    -webkit-appearance:none;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+}
+.select-ul {
+    position: absolute;
+    width: 1.6rem;
+    top: 0.5rem;
+    left: 0;
+    z-index: 10;
+    display: none;
+}
+
+.select-ul.company {
+    height: 1.2rem;
+    overflow-y: auto;
+}
+
+.select-ul>li {
+    height: 0.4rem;
+    line-height: 0.4rem;
+    padding-left: 10px;
+    box-sizing: border-box;
+    background-color: rgba(14, 148, 234, 0.2);
+    cursor: default;
+    color: #cdddf7;
+}
+
+.select-ul>li.active,
+.select-ul>li:hover {
+    color: white;
+    background: #0e94eb;
+}
+
+.select-ul>li {
+    width: 1.6rem;
+}
+option{
+    color: black;
+    background: #A6E1EC;
+    line-height: 20px;
+}
+.charts_table {
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    table-layout: fixed;
+}
+.charts_table > tbody > tr > td {
+    text-overflow: ellipsis;
+    white-space:nowrap;
+    overflow:hidden;
+}
+.charts_table > tbody > tr > td:hover
+{
+    text-overflow:inherit;
+    overflow:visible;
+}
+
+.charts_table>tbody>tr:hover {
+    background-color: #000 !important;
+}
+
+.pagination-info {
+    color: #fff;
+}
+.pagination {
+    margin: 0 !important;
+}
+
+.page-list {
+    color: #fff;
+}
+
+.refresh-btn {
+    background: linear-gradient(to bottom, #4eb5e5 0%,#389ed5 100%); /* W3C */
+    border: none;
+    border-radius: 5px;
+    position: relative;
+    border-bottom: 2px solid #2b8bc6;
+    color: #fbfbfb;
+    font-weight: 600;
+    font-family: 'Open Sans', sans-serif;
+    text-shadow: 1px 1px 1px rgba(0,0,0,.4);
+    font-size: 15px;
+    text-align: center;
+    /* text-indent: 2px; */
+    box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2);
+    cursor: pointer;
+
+    /* Just for presentation */
+    width: 0.3rem;
+    height: 0.3rem;
+    /* margin-bottom: 20px; */
+}
+.refresh-btn:active {
+  box-shadow: 0px 2px 0px 0px rgba(0,0,0,.2);
+  top: 1px;
+}
+.node-input {
+    width: 1.6rem;
+    height: 0.4rem;
+    box-sizing: border-box;
+    border: 1px solid #0E94EA;
+    font-size: 0.16rem;
+    background: rgba(14, 148, 234, 0.2);
+    position: relative;
+    padding-left: 10px;
+}
+
+

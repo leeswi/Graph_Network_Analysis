@@ -3,11 +3,13 @@ from index.Neo4j_model import Neo4j_Object
 import json
 from path.models import labels_key
 from django.core import serializers
+from django.views.decorators.cache import cache_page
 
 # from django.contrib.auth.decorators import login_required
 #
 # # @login_required(redirect_field_name='login')
 # @login_required(login_url='/user/login.html')
+# @cache_page(60 * 5)
 def index(request):
     #登录验证
     username = request.user.username

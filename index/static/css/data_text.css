@@ -96,23 +96,25 @@
 .data_content .data_info>div.info_3>div>div{
     width: 50%;
     position: relative;
+    top: 15%;
 }
 .data_content .data_info img{
     position: absolute;
     top: 20px;
-    left: 15px;
+    left: 20%;
 }
 .data_content .data_info>div>div>div>div{
     margin-left:65px;
     margin-top: 12px;
 }
-.data_content .data_info>div.info_2>div>div>div{
-    margin-left: 70px;
+.data_content .data_info>div.info_2>div>div>div,
+.data_content .data_info>div.info_3>div>div>div {
+    margin-left: 40%;
     margin-top: 12px;
 }
 .data_content .data_info p:nth-child(1){
     color:#fff;
-    font-size: 12.8px;
+    font-size: 15px;
 }
 .data_content .data_info p:nth-child(2){
     font-weight: 600;
@@ -569,12 +571,36 @@ td.main_key{
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.table_pr thead tr{border: none !important;}
-.table_pr th,.table_pr td{line-height: 21px !important;padding: 0 !important;text-align: center;font-size: 10px;;-webkit-transform:scale(0.8);border: none !important;color: #fff;}
-.table_pr thead,.table_pr thead{background-color: #3490ba}
-.table_pr td,.table_pr td{line-height: 24px !important;color: #dedfe0}
-.table_pr tbody tr,.table_pr tbody tr{border-bottom: 1px #3490ba solid}
-.table_pr tbody tr td{border-right: 1px #3490ba solid !important;}
+.table_pr thead tr{
+    border: none !important;
+}
+.table_pr thead tr th{
+    vertical-align: middle;
+    height: 0.3rem;
+}
+.table_pr th,.table_pr td{
+    line-height: 21px !important;
+    padding: 0 !important;
+    text-align: center;
+    font-size: 0.2rem;
+    -webkit-transform:scale(0.8);
+    border: none !important;
+    color: #fff;
+}
+.table_pr thead,.table_pr thead{
+    background-color: #3490ba
+}
+.table_pr td,.table_pr td{
+    line-height: 24px !important;
+    color: #dedfe0
+}
+.table_pr tbody tr,.table_pr tbody tr{
+    border-bottom: 1px #3490ba solid
+}
+.table_pr tbody tr td{
+    border-right: 1px #3490ba solid !important;
+    vertical-align: middle !important;
+}
 #pagerank{
     background-color: #29aae3 !important;
     opacity: 0.5;

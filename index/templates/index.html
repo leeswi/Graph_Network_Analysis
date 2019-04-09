@@ -19,14 +19,14 @@
             <div class="text_2">
                 <div class="fl">
                     <img src="{% static "img/info_1.png" %}" alt="" class="fl">
-                    <div class="fl">
+                    <div class="fl_2">
                         <p>节点总数</p>
                         <p>{{ nodesCounts }}</p>
                     </div>
                 </div>
                 <div class="fl">
                     <img src="{% static "img/info_2.png" %}" alt="" class="fl">
-                    <div class="fl">
+                    <div class="fl_2">
                         <p>标签数量</p>
                         <p>{{ lablesCount }}</p>
                     </div>
@@ -45,14 +45,14 @@
             <div class="text_3">
                 <div class="fl">
                     <img src="{% static "img/info_6.png" %}" alt="" class="fl">
-                    <div class="fl">
+                    <div class="fl_2">
                         <p>关系数量</p>
                         <p>{{ relaCounts }}</p>
                     </div>
                 </div>
                 <div class="fl">
                     <img src="{% static "img/info_7.png" %}" alt="" class="fl">
-                    <div class="fl">
+                    <div class="fl_2">
                         <p>关系类型数量</p>
                         <p>{{ relaTypeCounts }}</p>
                     </div>
@@ -128,7 +128,7 @@
                 <ul class="danger_depart danger_depart01">
                     <li class="danger_ico" style="background-image: url({% static "img/pic_ico_03.png" %}); background-position-x: 0px"></li>
                     <li class="data_name">模块化</li>
-                    <li class="data data01" id="Louvai"></li>
+                    <li class="data data01" id="Louvai">{{ louvain }}</li>
                 </ul>
                 <ul class="danger_depart danger_depart01">
                     <li class="danger_ico" style="background-image: url({% static "img/pic_ico_01.png" %}); background-position-x: 0px"></li>
@@ -191,7 +191,7 @@ $(function () {
 
     echart_4('',{{ labels_json|safe }});
 
-    getLouvai();
+    {#getLouvai();#}
 })
 </script>
 {% endblock %}
