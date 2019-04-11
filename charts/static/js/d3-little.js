@@ -9,7 +9,7 @@ function ShowGraph(nodes,edges,keyslist){
 	var height = u.clientHeight||o.offsetHeight;
 	var g = svg.append("g")
 		.attr("transform","translate("+marge.top+","+marge.left+")");
-		
+
 	//准备数据
 	var nodes = nodes;
 	var edges = edges;
@@ -46,8 +46,8 @@ function ShowGraph(nodes,edges,keyslist){
 		.links(edges)
 		.distance(function(d){//每一边的长度
 			return 100;
-		})    	
-	//设置图形的中心位置	
+		})
+	//设置图形的中心位置
 	forceSimulation.force("center")
 		.x(width/2*0.9)
 		.y(height/2*0.8);
@@ -106,7 +106,7 @@ function ShowGraph(nodes,edges,keyslist){
 			.on("drag",dragged)
 			.on("end",ended)
 		);
-		
+
 	//绘制节点
 	gs.append("circle")
 		.attr("r",10)
@@ -158,7 +158,7 @@ function ShowGraph(nodes,edges,keyslist){
 			.attr("x2",function(d){return d.target.x;})
 			.attr("y2",function(d){return d.target.y;})
 			.attr("marker-end", "url(#resolved)");
-			
+
 		linksText
 			.attr("x",function(d){
 			return (d.source.x+d.target.x)/2;
@@ -166,7 +166,7 @@ function ShowGraph(nodes,edges,keyslist){
 			.attr("y",function(d){
 			return (d.source.y+d.target.y)/2;
 		});
-			
+
 		gs.attr("transform",function(d) { return "translate(" + d.x + "," + d.y + ")"; });
 	}
 	function started(d){

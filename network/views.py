@@ -1,8 +1,6 @@
 from django.shortcuts import render,redirect
 from index.Neo4j_model import Neo4j_Object
-import json
-import copy
-import re
+import json,copy,re
 from django.http import HttpResponse
 from path.models import labels_key
 from django.core import serializers

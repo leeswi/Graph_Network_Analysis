@@ -73,6 +73,11 @@ class Neo4j_Object(object):
         else:
             return 0
 
+    def getProperty(self,label):
+        cql = "match (n:%s) return keys(n) as keys" % label
+        res = self.graph.run(cql).data()
+        return res[0]
+
     def GetIndex(self):
         cql = "CALL apoc.index.list()"
         res = self.graph.run(cql).data()
@@ -92,7 +97,9 @@ class Neo4j_Object(object):
         return res
 
     def GetSearchAll(self,query,label,key):
-        cql = "match (node:%s{%s:'%s'}) return labels(node) as labels,node limit 20" %(label,key,query)
+        cql = '''
+        match (node:%s{%s:"%s"}) return labels(node) as labels,node limit 20
+        ''' %(label,key,query)
         res = self.graph.run(cql).data()
         return res
 
@@ -102,7 +109,9 @@ class Neo4j_Object(object):
         # key = labels_key.objects.get(labels=label)
         # key = key.main_key
         if not content.isdigit():
-            cql = "match (n:%s{%s:'%s'}) return properties(n) as pro" %(label,index,content)
+            cql = '''
+            match (n:%s{%s:"%s"}) return properties(n) as pro
+            ''' %(label,index,content)
         else:
             cql = "match (n:%s{%s:%s}) return properties(n) as pro" % (label, index, content)
         res = self.graph.run(cql).data()
@@ -113,14 +122,22 @@ class Neo4j_Object(object):
         # key = key.main_key
         if (',' in label):
             label = label.split(',')[0]
-        cql = "match p=(m)-[*1..%d]-(n:%s{%s:'%s'}) with *,relationships(p) AS r return r" %(deepth,label,index,content)
+        cql = '''match p=(m)-[*1..%d]-(n:%s{%s:"%s"}) with *,relationships(p) AS r return r''' %(deepth,label,index,content)
         res = self.graph.run(cql).data()
+        return res
+
+    #获取整体图结构
+    def GetGraphInfo(self):
+        # cql = "call db.schema() yield relationships,nodes return relationships as r"
+        cql = "call db.schema() yield relationships,nodes return nodes as r"
+        res = self.graph.run(cql).data()
+        # res = self.rawrela_to_rela(res)
         return res
 
     def GetShortTestPath(self,s_label,s_key,s_content,e_label,e_key,e_content,weight):
         cql1 = '''
-        MATCH (start:%s{%s:'%s'}),(end:%s{%s:'%s'})
-        CALL algo.shortestPath.stream(start, end, '%s')
+        MATCH (start:%s{%s:"%s"}),(end:%s{%s:"%s"})
+        CALL algo.shortestPath.stream(start, end, "%s")
         YIELD nodeId,cost
         WITH nodeId,cost
         CALL apoc.get.nodes(nodeId)
@@ -138,8 +155,8 @@ class Neo4j_Object(object):
 
     def GetKSP(self,s_label,s_key,s_content,e_label,e_key,e_content,k,weight):
         cql = '''
-        MATCH (start:%s{%s:'%s'}), (end:%s{%s:'%s'})
-        CALL algo.kShortestPaths.stream(start, end, %s, '%s' ,{direction:'OUTGOING', path: true})
+        MATCH (start:%s{%s:"%s"}), (end:%s{%s:"%s"})
+        CALL algo.kShortestPaths.stream(start, end, %s, "%s" ,{direction:'OUTGOING', path: true})
         YIELD index, nodeIds, costs,path
         RETURN [node in algo.getNodesById(nodeIds) | node] AS nodes,
                costs,
@@ -158,7 +175,7 @@ class Neo4j_Object(object):
 
     def GetPageRank(self,label,rela='',weight=''):
         cql = '''
-        CALL algo.pageRank.stream('%s', '%s', {
+        CALL algo.pageRank.stream("%s", "%s", {
             iterations:20, dampingFactor:0.85, weightProperty: "%s"
         })
         YIELD nodeId, score
@@ -173,7 +190,7 @@ class Neo4j_Object(object):
     def FindRela(self,s_label,s_key,s_content,e_label,e_key,e_content,deepth):
         deepth = int(deepth)
         cql = '''
-        match p=(m:%s{%s:'%s'})-[*1..%d]-(n:%s{%s:'%s'}) with *,relationships(p) AS r return r
+        match p=(m:%s{%s:"%s"})-[*1..%d]-(n:%s{%s:"%s"}) with *,relationships(p) AS r return r
         ''' %(s_label,s_key,s_content,deepth,e_label,e_key,e_content)
         res = self.graph.run(cql).data()
         return res
@@ -244,7 +261,7 @@ class Neo4j_Object(object):
     #中心性算法
     def closeness(self,label,link,property):
         cql = '''
-        CALL algo.closeness.stream('%s', '%s')
+        CALL algo.closeness.stream("%s", "%s")
         YIELD nodeId, centrality
         RETURN algo.getNodeById(nodeId).%s AS node, nodeId AS id,centrality
         ORDER BY centrality DESC;
@@ -254,7 +271,7 @@ class Neo4j_Object(object):
 
     def harmonic_closeness(self, label, link, property):
         cql = '''
-        CALL algo.closeness.harmonic.stream('%s', '%s') YIELD nodeId, centrality
+        CALL algo.closeness.harmonic.stream("%s", "%s") YIELD nodeId, centrality
         RETURN algo.getNodeById(nodeId).%s AS node, nodeId AS id,centrality
         ORDER BY centrality DESC
         ''' %(label,link,property)
@@ -263,7 +280,7 @@ class Neo4j_Object(object):
 
     def PageRank(self, label, link, property):
         cql = '''
-        CALL algo.pageRank.stream('%s', '%s', {
+        CALL algo.pageRank.stream("%s", "%s", {
             iterations:20, dampingFactor:0.85, weightProperty: "weight"
         })
         YIELD nodeId, score
@@ -275,7 +292,7 @@ class Neo4j_Object(object):
 
     def ArticleRank(self, label, link, property):
         cql = '''
-        CALL algo.articleRank.stream('%s', '%s', {iterations:20, dampingFactor:0.85})
+        CALL algo.articleRank.stream("%s", "%s", {iterations:20, dampingFactor:0.85})
         YIELD nodeId, score
         RETURN algo.getNodeById(nodeId).%s AS node, nodeId AS id, score as centrality
         ORDER BY score DESC
@@ -285,7 +302,7 @@ class Neo4j_Object(object):
 
     def eigenvector(self, label, link, property):
         cql = '''
-        CALL algo.eigenvector.stream('%s', '%s', {normalization: "max"})
+        CALL algo.eigenvector.stream("%s", "%s", {normalization: "max"})
         YIELD nodeId, score
         RETURN algo.getNodeById(nodeId).%s AS node, nodeId AS id, score as centrality
         ORDER BY score DESC
@@ -315,7 +332,7 @@ class Neo4j_Object(object):
 
     def Louvain(self,label,link,property,name):
         cql = '''
-        CALL algo.louvain.stream('%s', '%s', {includeIntermediateCommunities: true})
+        CALL algo.louvain.stream("%s", "%s", {includeIntermediateCommunities: true})
         YIELD nodeId, communities
         RETURN algo.getNodeById(nodeId).%s as name,communities as community
         ''' % (label, link, property)
@@ -334,7 +351,7 @@ class Neo4j_Object(object):
 
     def UnionFind(self,label,link,property,name):
         cql = '''
-        CALL algo.unionFind.stream('%s', '%s', {})
+        CALL algo.unionFind.stream("%s", "%s", {})
         YIELD nodeId,setId
         RETURN algo.getNodeById(nodeId).%s AS name,setId AS community
         ''' % (label, link, property)
@@ -353,7 +370,7 @@ class Neo4j_Object(object):
     
     def SCC(self,label,link,property,name):
         cql = '''
-        CALL algo.scc('%s','%s', {write:true,partitionProperty:'partition'})
+        CALL algo.scc("%s","%s", {write:true,partitionProperty:'partition'})
         YIELD loadMillis, computeMillis, writeMillis, setCount, maxSetSize, minSetSize;
         ''' % (label, link)
         cql1 = '''
@@ -377,3 +394,32 @@ class Neo4j_Object(object):
                     community_list.append(j)
             return community_list
         return res1
+
+    #获取地理信息
+    def GetGeo(self,label,property,longitude,latitude,city,data):
+        if(city == '' and data == ''):
+            cql = '''
+            match (n:%s) return n.%s as name,n.%s as longitude,n.%s as latitude
+            ''' %(label,property,longitude,latitude)
+        elif(city == '' and data != ''):
+            cql = '''
+            match (n:%s) return n.%s as name,n.%s as longitude,n.%s as latitude,n.%s as value
+            ''' % (label, property, longitude, latitude,data)
+        elif(city != '' and data != ''):
+            cql = '''
+            match (n:%s) return n.%s as name,n.%s as city,n.%s as value
+            ''' %(label,property,city,data)
+        res = self.graph.run(cql).data()
+        return res
+
+    def GetSun(self,label,city,location):
+        res = {}
+        for i in location:
+            cql = '''
+                match (n:%s)
+                where n.%s =~ '.*%s.*'
+                return count(n) as num
+            ''' %(label,city,i)
+            result = self.graph.run(cql).data()
+            res[i] = result[0]['num']
+        return res

@@ -27,7 +27,7 @@
 }
 .center-top {
     width: 100%;
-    height: 65.9%;
+    height: 60%;
     position: relative;
     top: 0;
     left: 0;
@@ -37,8 +37,49 @@
 }
 .center-bottom {
     width: 100%;
-    height: 34%;
+    height: 40%;
     position: relative;
+}
+.center-bottom-title {
+    display: flex;
+}
+.center-title {
+    width: 100%;
+    height: 0.8rem;
+    line-height: 0.8rem;
+    text-align: center;
+    background: url(../images/title_bg01.png) center center no-repeat;
+    font-size: 0.2rem;
+    color: #0e94ea;
+    background-size: 1.8rem 0.25rem;
+    font-weight: 900;
+}
+.center-btn {
+    display: flex;
+}
+.center-botton {
+    background: linear-gradient(to bottom, #4eb5e5 0%,#389ed5 100%); /* W3C */
+    border: none;
+    border-radius: 5px;
+    position: relative;
+    border-bottom: 2px solid #2b8bc6;
+    color: #fbfbfb;
+    font-weight: 600;
+    font-family: 'Open Sans', sans-serif;
+    text-shadow: 1px 1px 1px rgba(0,0,0,.4);
+    font-size: 15px;
+    text-align: center;
+    box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2);
+    cursor: pointer;
+
+    width: 0.3rem;
+    height: 0.3rem;
+    top: 30%;
+    right: 15%;
+}
+.center-botton:active {
+  box-shadow: 0px 2px 0px 0px rgba(0,0,0,.2);
+  top: 31%;
 }
 .left-top {
     width: 100%;
@@ -172,6 +213,15 @@
 .chart-box-right {
     position: absolute;
     top: 0.6rem;
+    bottom: 0;
+    width: 95%;
+    margin: auto;
+    left: 0.2rem;
+    height: auto;
+}
+.chart-box-center {
+    position: absolute;
+    top: 0.8rem;
     bottom: 0;
     width: 95%;
     margin: auto;

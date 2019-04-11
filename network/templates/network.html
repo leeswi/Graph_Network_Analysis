@@ -11,70 +11,71 @@
 
 {% block content %}
 <div class="net_content">
-<div class="index_tabs" >
-    <div class="inner">
-        <div class="data_left03">
-            <div class="dataAllNo01 maginS01">
-                <div class="dataAllBorder01">
-                    <div class="dataAllBorder02" id="dataAllBorder02">
-                        <div class="data_tit3">节点搜索</div>
-                            <div class="search d2">
-                                <form id = 'search' onsubmit="return false">
-                                    <input id="local_object_data" runat="server" autocomplete="off" data-provide="typeahead" data-items="12" class="input-sm form-control" type="text" placeholder="搜索从这里开始..." name="search">
-                                    <div id="deepsearch" style="display: none">
-                                        <select id="select_data_1">
-                                            <option value="" disabled selected>选择对象标签</option>
-                                            {% for i in labels %}
-                                            <option value="{{ i }}">{{ i.name }} </option>
-                                            {% endfor %}
-                                        </select>
-        {#                                <input id="local_object_data" runat="server" autocomplete="off" data-provide="typeahead" data-items="12" type="text" placeholder="输入对象标签" autocomplete="off">#}
-                                        <input id="local_object_data_" runat="server" autocomplete="off" data-provide="typeahead" data-items="12" type="text" placeholder="输入对象属性" autocomplete="off" name="pro">
-                                        <input id="deepth" placeholder="输入查询深度，默认为3" name="deepth">
-                                    </div>
-                                    <button type="submit"></button>
-                                    <span id="deepbtn">高级搜索</span>
-                                </form>
-                            </div>
-                            <div class = "panel1 panel-default searchpanel" id="btable">
-                                <table id="results" class="table table-striped table-hover">
+    <div class="index_tabs" >
+        <div class="inner">
+            <div class="data_left03">
+                <div class="dataAllNo01 maginS01">
+                    <div class="dataAllBorder01">
+                        <div class="dataAllBorder02" id="dataAllBorder02">
+                            <div class="data_tit3">节点搜索</div>
+                                <div class="search d2">
+                                    <form id = 'search' onsubmit="return false">
+                                        <input id="local_object_data" runat="server" autocomplete="off" data-provide="typeahead" data-items="12" class="input-sm form-control" type="text" placeholder="搜索从这里开始..." name="search">
+                                        <div id="deepsearch" style="display: none">
+                                            <select id="select_data_1">
+                                                <option value="" disabled selected>选择对象标签</option>
+                                                {% for i in labels %}
+                                                <option value="{{ i }}">{{ i.name }} </option>
+                                                {% endfor %}
+                                            </select>
+            {#                                <input id="local_object_data" runat="server" autocomplete="off" data-provide="typeahead" data-items="12" type="text" placeholder="输入对象标签" autocomplete="off">#}
+                                            <input id="local_object_data_" runat="server" autocomplete="off" data-provide="typeahead" data-items="12" type="text" placeholder="输入对象属性" autocomplete="off" name="pro">
+                                            <input id="deepth" placeholder="输入查询深度，默认为3" name="deepth">
+                                        </div>
+                                        <button type="submit"></button>
+                                        <span id="deepbtn">高级搜索</span>
+                                    </form>
+                                </div>
+                                <div class = "panel1 panel-default searchpanel" id="btable" style="height: 80%">
+                                    <table id="results" class="table table-striped table-hover">
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="data_left04">
+                <!--style="margin-top: 6.3%"-->
+                <div class="dataAllNo01">
+                    <div class="dataAllBorder01">
+                        <div class="dataAllBorder02" >
+                            <div class="data_tit3">网络视图查看</div>
+                            <svg id="div1" width=90% height="calc(90%)" style="margin: 0 5% 5% 5%"></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="data_left03">
+                <div class="dataAllNo01 maginS01">
+                    <div class="dataAllBorder01">
+                        <div class="dataAllBorder02">
+                            <div class="data_tit3">详细信息</div>
+                            <div class="dataAllBorder20">
+                                <table id="more" class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 18%">属性</th>
+                                        <th>内容</th>
+                                    </tr>
+                                    </thead>
                                     <tbody>
+                                    <tr>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="data_left04">
-            <!--style="margin-top: 6.3%"-->
-            <div class="dataAllNo01">
-                <div class="dataAllBorder01">
-                    <div class="dataAllBorder02" >
-                        <div class="data_tit3">网络视图查看</div>
-                        <svg id="div1" width=90% height="calc(90%)" style="margin: 0 5% 5% 5%"></svg>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="data_left03">
-            <div class="dataAllNo01 maginS01">
-                <div class="dataAllBorder01">
-                    <div class="dataAllBorder02">
-                        <div class="data_tit3">详细信息</div>
-                        <div class="dataAllBorder20">
-                            <table id="more" class="table table-bordered">
-                                <thead>
-                                <tr>
-                                    <th style="width: 18%">属性</th>
-                                    <th>内容</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                </tr>
-                                </tbody>
-                            </table>
                         </div>
                     </div>
                 </div>
@@ -82,15 +83,33 @@
         </div>
     </div>
 </div>
+<div class="windows8">
+    <div class="wBall" id="wBall_1">
+        <div class="wInnerBall"></div>
+    </div>
+    <div class="wBall" id="wBall_2">
+        <div class="wInnerBall"></div>
+    </div>
+    <div class="wBall" id="wBall_3">
+        <div class="wInnerBall"></div>
+    </div>
+    <div class="wBall" id="wBall_4">
+        <div class="wInnerBall"></div>
+    </div>
+    <div class="wBall" id="wBall_5">
+        <div class="wInnerBall"></div>
+    </div>
 </div>
+
 <script src="{% static "js/jquery-2.2.1.min.js" %}"></script>
 <script src="{% static "js/bootstrap3-typeahead.js" %}"></script>
+<script src="{% static "js/ajax.js" %}"></script>
 <script src="{% static "js/d3.v5.min.js" %}"></script>
 <script src="{% static "js/d3.js" %}"></script>
 <script src="{% static "js/bootstrap-table.js" %}"></script>
 <script src="{% static "js/bootstrap-table-zh-CN.min.js" %}"></script>
 <script src="{% static "js/btable.js" %}"></script>
-<script src="{% static "js/ajax.js" %}"></script>
+
 <script>
 $('#local_object_data').typeahead({
     source: function (query, process) {
@@ -153,6 +172,7 @@ function SearchMore(row) {
                 $("<tr><td>"+key+"</td><td>"+content[key]+"</td></tr>").appendTo(t);
             }
             $("svg").empty();
+            console.log(data);
             ShowGraph(data[0],data[1],data[3]);
         },"json");
 }

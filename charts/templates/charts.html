@@ -56,7 +56,42 @@
             </div>
         </div>
         <div class="center-bottom">
-            <hr style=" height:2px;border:none;border-top:2px dotted #185598;" />
+            <hr style=" height:2px;border:none;border-top:2px dotted #185598;margin-bottom:0;" />
+            <div class="center-bottom-title">
+                <div class="center-title">地理信息采集</div>
+                <div class="center-btn">
+                    <button onclick="get_GPS()" type="button" class="center-botton">
+                        <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+                    </button>
+                    <button onclick="get_sun()" type="button" class="center-botton">
+                        <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="chart-box-center">
+                <select class="select-div" id="node-label-center" onchange="getProperty();">
+                    {% for i in labels %}
+                         <option value="{{ i.name }}">{{ i.name }} </option>
+                    {% endfor %}
+                </select>
+                <select class="select-div" id="node-property-longitude">
+                    <option selected="selected" disabled="disabled"  style='display: none' value=''>--经度--</option>
+                </select>
+                <select class="select-div" id="node-property-latitude">
+                    <option selected="selected" disabled="disabled"  style='display: none' value=''>--纬度--</option>
+                </select>
+                <select class="select-div" id="node-property-city">
+                    <option selected="selected" disabled="disabled"  style='display: none' value=''>--省市--</option>
+                </select>
+                <select class="select-div" id="node-property-data">
+                    <option selected="selected" disabled="disabled"  style='display: none' value=''>--数据项--</option>
+                </select>
+{#                <input class="node-input" type="text" value="" id="node-input" placeholder="输入节点...">#}
+                <button onclick="get_geo()" type="button" class="refresh-btn">
+                    <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+                </button>
+                <table rules=rows id="charts_center" class="table_style charts_table"></table>
+            </div>
         </div>
     </div>
     <div class="box-right">
@@ -95,15 +130,39 @@
                 <table rules=rows id="charts_right" class="table_style charts_table"></table>
             </div>
         </div>
+        <div class="left-bottom">
+            <div id="sun" style="width: 100%;height: 100%;"></div>
+        </div>
     </div>
 </div>
+<div class="windows8">
+        <div class="wBall" id="wBall_1">
+            <div class="wInnerBall"></div>
+        </div>
+        <div class="wBall" id="wBall_2">
+            <div class="wInnerBall"></div>
+        </div>
+        <div class="wBall" id="wBall_3">
+            <div class="wInnerBall"></div>
+        </div>
+        <div class="wBall" id="wBall_4">
+            <div class="wInnerBall"></div>
+        </div>
+        <div class="wBall" id="wBall_5">
+            <div class="wInnerBall"></div>
+        </div>
+    </div>
 
 <script src="{% static "js/rem.js" %}"></script>
-<script src="{% static "js/echarts-all-3.js" %}"></script>
+<script src="{% static "js/echarts.min.js" %}"></script>
 <script src="{% static "js/jquery-2.2.1.min.js" %}"></script>
+<script src="{% static "js/d3.v5.min.js" %}"></script>
+<script src="{% static "js/d3-little.js" %}"></script>
 <script src="{% static "js/ajax.js" %}"></script>
 <script src="{% static "js/china.js" %}"></script>
 <script src="{% static "js/bootstrap-table.js" %}"></script>
 <script src="{% static "js/bootstrap-table-zh-CN.min.js" %}"></script>
 <script src="{% static "js/chart-table.js" %}"></script>
+<script src="{% static "js/chart-map.js" %}"></script>
+
 {% endblock %}

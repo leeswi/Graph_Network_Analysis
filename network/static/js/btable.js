@@ -27,10 +27,9 @@ var TableInit = function () {
             queryParams: oTableInit.queryParams,//传递参数（*）
             sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
             pageNumber:1,                       //初始化加载第一页，默认第一页
-            pageSize: 8,                       //每页的记录行数（*）
+            pageSize: 10,                       //每页的记录行数（*）
             search: false,      //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
             strictSearch: true,
-            showColumns: true,                  //是否显示所有的列
             showRefresh: false,                  //是否显示刷新按钮
             minimumCountColumns: 1,             //最少允许的列数
             clickToSelect: true,                //是否启用点击选中行
@@ -75,7 +74,7 @@ function initTableHeight(){
     var h1 = o1.clientHeight||o1.offsetHeight;
     var o2 = document.getElementById("deepsearch");
     var h2 = o2.clientHeight||o2.offsetHeight;
-    var height = h0-h1-h2-100;
+    var height = h0-h1-h2-130;
     $(".panel1").css({"height": height});
 }
 

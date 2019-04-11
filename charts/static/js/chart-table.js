@@ -1,6 +1,5 @@
 
 $(function () {
-    //1.初始化Table
     var oTable = new TableInit();
     oTable.Init();
     var oTable_r = new TableInit_right();
@@ -217,3 +216,116 @@ function left_charts(data){
 
     myChart.setOption(option);
 }
+
+$(document).ready(function(){
+    getProperty();
+});
+
+function getProperty(label){
+    label=$("#node-label-center option:selected").val();//这就是selected的值
+    $("#node-property-longitude").empty();
+    $("#node-property-latitude").empty();
+    $("#node-property-city").empty();
+    $("#node-property-data").empty();
+    $("#node-property-longitude").append("<option selected=\"selected\" disabled=\"disabled\"  style='display: none' value=''>--经度--</option>")
+    $("#node-property-latitude").append("<option selected=\"selected\" disabled=\"disabled\"  style='display: none' value=''>--纬度--</option>");
+    $("#node-property-city").append("<option selected=\"selected\" disabled=\"disabled\"  style='display: none' value=''>--省市--</option>");
+    $("#node-property-data").append("<option selected=\"selected\" disabled=\"disabled\"  style='display: none' value=''>--数据项--</option>");
+    $.ajax({
+        type : "POST",
+        url : "getProperty",
+        data : {'label':label},
+        contentType: "application/x-www-form-urlencoded;charset=utf-8",
+        dataType:"json",
+        success : function (msg) {
+            for(let i in msg.keys){
+                $("#node-property-longitude").append("<option value='"+msg.keys[i]+"'>"+msg.keys[i]+"</option>");
+                $("#node-property-latitude").append("<option value='"+msg.keys[i]+"'>"+msg.keys[i]+"</option>");
+                $("#node-property-city").append("<option value='"+msg.keys[i]+"'>"+msg.keys[i]+"</option>");
+                $("#node-property-data").append("<option value='"+msg.keys[i]+"'>"+msg.keys[i]+"</option>");
+            }
+        },
+        error:function(){
+            alert("错误");
+        }
+    });
+}
+
+function get_geo(){
+    var label = $("#node-label-center option:selected").val();
+    var longitude = $("#node-property-longitude option:selected").val();
+    var latitude = $("#node-property-latitude option:selected").val();
+    var city = $("#node-property-city option:selected").val();
+    var data = $("#node-property-data option:selected").val();
+
+    var TableInit_center = function () {
+        var oTableInit = new Object();
+
+        oTableInit.Init = function () {
+            $('#charts_center').bootstrapTable({
+                ajax : function (request) {
+                    $.ajax({
+                        type : "POST",
+                        url : "GetGeo",
+                        data : {'label':label,'longitude':longitude,'latitude':latitude,'city':city,'data':data},
+                        contentType: "application/x-www-form-urlencoded;charset=utf-8",
+                        dataType:"json",
+                        success : function (msg) {
+                            if(msg==0){alert('映射表无记录！');return}
+                            if(msg==-1){alert('查询参数错误，请重新输入！');return}
+                            request.success({
+                                row : msg
+                            });
+                            $('#charts_center').bootstrapTable('load', msg);
+                        },
+                        error:function(){
+                            alert("错误");
+                            $("#charts_center").bootstrapTable('destroy');
+                        }
+                    });
+                },
+                toolbar: '#toolbar',                //工具按钮用哪个容器
+                striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: false,                     //是否启用排序
+                sortOrder: "asc",                   //排序方式
+                // queryParams: oTableInit.queryParams,//传递参数（*）
+                sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber:1,                       //初始化加载第一页，默认第一页
+                pageSize: 5,                       //每页的记录行数（*）
+                strictSearch: true,
+                search: false,                      //是否显示表格搜索
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: false,                //是否启用点击选中行
+                uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                   //是否显示父子表
+                columns: [{
+                    field: 'name',
+                    title: '节点',
+                    width:20,
+                }, {
+                    field: 'longitude',
+                    title: '经度',
+                    width:40,
+                },{
+                    field: 'latitude',
+                    title: '纬度',
+                    width:40,
+                },{
+                    field: 'city',
+                    title: '区域',
+                    width:30,
+                },{
+                    field: 'value',
+                    title: '数据',
+                    width:30,
+                }]
+            });
+        };
+        return oTableInit;
+    };
+    var oTable_r = new TableInit_center();
+    oTable_r.Init();
+};

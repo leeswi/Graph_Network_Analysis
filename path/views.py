@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from index.Neo4j_model import Neo4j_Object
 from path.models import labels_key,algo_module
 from django.core import serializers
-import json
+
 # Create your views here.
 def path(request):
     title = "路径探索"
