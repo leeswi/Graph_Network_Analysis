@@ -232,7 +232,6 @@ myChart.on('click', function (param) {
 //展示对应的省
 // showprovince（province[i],provinceText[i])改成这样，function（pName,Chinese_）{}
 function  showProvince(pName, Chinese_){
-
     //这写省份的js都是通过在线构建工具生成的，保存在本地，需要时加载使用即可，最好不要一开始全部直接引入。
     loadBdScript('$'+pName+'JS','../static/js/province/'+pName+'.js',function(){
     //初始化echarts:具体代码参考上面初始化中国地图即可，这里不再重复。
@@ -351,6 +350,10 @@ function get_GPS(){
     var latitude = $("#node-property-latitude option:selected").val();
     var city = $("#node-property-city option:selected").val();
     var data = $("#node-property-data option:selected").val();
+    if(longitude == '' && latitude == '' && city == '' && data == ''){
+        initChina();
+        return;
+    }
     $.ajax({
         type : "POST",
         url : "GetGPS",

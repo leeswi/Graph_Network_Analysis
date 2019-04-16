@@ -40,6 +40,7 @@ def getData(request,ajax): #接受ajax传来的数据进行查询和处理操作
             GraphJson.append(node_key)
             keysList = list(labels_key.objects.all().values())
             GraphJson.append(keysList)
+            print(json.dumps(GraphJson));
             return HttpResponse(json.dumps(GraphJson))
     if (ajax == 'keys'):#获取所有标签列表
         keys_list = []

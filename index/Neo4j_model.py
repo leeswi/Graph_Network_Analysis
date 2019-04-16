@@ -92,13 +92,13 @@ class Neo4j_Object(object):
         return res
 
     def GetSearch(self,query):
-        cql = "call apoc.index.search(\""+self.index+"\",\"*"+query+"*\") yield node return labels(node) as labels,node limit 20"
+        cql = "call apoc.index.search(\""+self.index+"\",\"*"+query+"*\") yield node return labels(node) as labels,node"
         res = self.graph.run(cql).data()
         return res
 
     def GetSearchAll(self,query,label,key):
         cql = '''
-        match (node:%s{%s:"%s"}) return labels(node) as labels,node limit 20
+        match (node:%s{%s:"%s"}) return labels(node) as labels,node
         ''' %(label,key,query)
         res = self.graph.run(cql).data()
         return res

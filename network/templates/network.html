@@ -3,6 +3,7 @@
 {% load staticfiles %}
 <link rel="stylesheet" href="{% static "css/demo_button.css" %}">
 <link rel="stylesheet" href="{% static "css/data_text.css" %}">
+<link rel="stylesheet" href="{% static "css/honeySwitch.css" %}">
 <link rel="stylesheet" href="{% static "css/BigData.css" %}">
 <link rel="stylesheet" href="{% static "css/graph.css" %}" >
 <link rel="stylesheet" href="{% static "css/bootstrap-table.scss" %}" >
@@ -53,6 +54,32 @@
                         <div class="dataAllBorder02" >
                             <div class="data_tit3">网络视图查看</div>
                             <svg id="div1" width=90% height="calc(90%)" style="margin: 0 5% 5% 5%"></svg>
+                            <div id="cus_ser">
+                                <div class="cus_ser_">
+                                    <div class="title">参数设置</div>
+                                    <ul>
+                                        弹簧力<input type='range' id='r1' class='tip fill' value='100' max='500' min='10' name='r1'/>
+                                        电荷力<input type='range' id='r2' class='tip fill' value='-400' max='100' min='-2000' name='r2'/>
+                                        节点半径<input type='range' id='r3' class='tip fill' value='1' max='5' min='1' name='r3'/>
+                                        节点透明度<input type='range' id='r6' class='tip fill' value='10' max='10' min='1' name='r6'/>
+
+                                        <div class="common-row">
+                                            <div class="cell-left">固定布局</div>
+                                            <div class="cell-right"><span class="switch-off" id="fixLayout"></span></div>
+                                        </div>
+                                        <button id="r4" onclick="" style="display:none">固定所有节点</button>
+                                        <button id="r5" onclick="" style="display:none">仿真所有节点</button>
+                                        <div class="common-row">
+                                            <div class="cell-left">节点文字</div>
+                                            <div class="cell-right"><span class="switch-on" id="nodeText"></span></div>
+                                        </div>
+                                        <div class="common-row">
+                                            <div class="cell-left">关系文字</div>
+                                            <div class="cell-right"><span class="switch-on" id="linkText"></span></div>
+                                        </div>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -103,6 +130,7 @@
 
 <script src="{% static "js/jquery-2.2.1.min.js" %}"></script>
 <script src="{% static "js/bootstrap3-typeahead.js" %}"></script>
+<script src="{% static "js/honeySwitch.js" %}"></script>
 <script src="{% static "js/ajax.js" %}"></script>
 <script src="{% static "js/d3.v5.min.js" %}"></script>
 <script src="{% static "js/d3.js" %}"></script>
@@ -122,13 +150,6 @@ $('#local_object_data').typeahead({
             async: false,
             success: function (data) {
                 var temp=[];
-                {#for(let i of keyslist){#}
-                {#    if(node_label.includes(i.labels)){#}
-                {#        var show = i.main_key;#}
-                {#        var show2 = i.second_key;#}
-                {#        if(d[show]){return d[show];}#}
-                {#        if(d[show2]){return d[show2];}#}
-                {#    }#}
                 var keyslist = {{ keyslist|safe }};
                 for(let i of data){
                     for(let j of keyslist){
@@ -172,7 +193,6 @@ function SearchMore(row) {
                 $("<tr><td>"+key+"</td><td>"+content[key]+"</td></tr>").appendTo(t);
             }
             $("svg").empty();
-            console.log(data);
             ShowGraph(data[0],data[1],data[3]);
         },"json");
 }
@@ -182,6 +202,8 @@ btn.click(function () {
     $("#btable").hide();
     spread.slideToggle()
 })
+
+
 </script>
 
 {% endblock %}
