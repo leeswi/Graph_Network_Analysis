@@ -5,4 +5,7 @@ from . import views
 
 urlpatterns = [
     path('map.html', views.map),
+    path('GetCoordinate', views.GetCoordinate),
+    path('GetPoint', views.GetPoint),
+    path('AddLayer', views.AddLayer),
 ]

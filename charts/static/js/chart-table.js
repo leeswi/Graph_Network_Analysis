@@ -233,7 +233,7 @@ function getProperty(label){
     $("#node-property-data").append("<option selected=\"selected\" disabled=\"disabled\"  style='display: none' value=''>--数据项--</option>");
     $.ajax({
         type : "POST",
-        url : "getProperty",
+        url : "/charts/getProperty",
         data : {'label':label},
         contentType: "application/x-www-form-urlencoded;charset=utf-8",
         dataType:"json",

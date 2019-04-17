@@ -40,7 +40,7 @@ def getData(request,ajax): #接受ajax传来的数据进行查询和处理操作
             GraphJson.append(node_key)
             keysList = list(labels_key.objects.all().values())
             GraphJson.append(keysList)
-            print(json.dumps(GraphJson));
+            print(json.dumps(GraphJson))
             return HttpResponse(json.dumps(GraphJson))
     if (ajax == 'keys'):#获取所有标签列表
         keys_list = []
@@ -83,6 +83,7 @@ def getData(request,ajax): #接受ajax传来的数据进行查询和处理操作
         if(query and (key=='' or label=='选择对象标签')):#索引搜索
             result = graph.GetSearch(query)
         else:
+            print("here")
             result = graph.GetSearchAll(query,label,key)#全局搜索
         for i in result:
             t_label = i['labels']

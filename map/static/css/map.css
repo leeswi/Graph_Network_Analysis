@@ -9,8 +9,18 @@
 .right{
     float: right;
 }
-.map_left{
+.map_con{
     width: 100%;
+    padding: 0;
+    background-color: #081832cc;
+}
+.map_con_div{
+    display: none;
+    background-color: #030829;
+    padding: 10px;
+}
+.map_left{
+    width: 79%;
     height: 100%;
     /* margin-left: 0 !important; */
 }
@@ -224,4 +234,17 @@
   color: white;
   opacity: 0.5;
   font-weight: bolder;
+}
+
+label {
+    color: #fff;
+    height: 30px;
+    margin: 5px 5px 5px 5px !important;
+    padding: 4px;
+}
+.left_input_top select {
+    color: #fff !important;
+}
+#query-content{
+    color: #fff !important;
 }

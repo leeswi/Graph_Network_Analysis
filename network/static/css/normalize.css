@@ -183,18 +183,35 @@ table {
     background: #ccc;
 }
 /*滚动条整体样式*/
-.chart-scroll::-webkit-scrollbar {
+.chart-scroll,.right-body::-webkit-scrollbar {
     width: 10px;
     height: 0px;
 }
 /*滚动条滑块*/
-.chart-scroll::-webkit-scrollbar-thumb {
+.chart-scroll,.right-body::-webkit-scrollbar-thumb {
     border-radius: 10px;
     -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
     background: #092c50;
 }
 /*滚动条轨道*/
-.chart-scroll::-webkit-scrollbar-track {
+.chart-scroll,.right-body::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0);
+    border-radius: 10px;
+    background: #081832;
+}
+/*滚动条整体样式*/
+::-webkit-scrollbar {
+    width: 10px;
+    height: 0px;
+}
+/*滚动条滑块*/
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    background: #092c50;
+}
+/*滚动条轨道*/
+::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0);
     border-radius: 10px;
     background: #081832;

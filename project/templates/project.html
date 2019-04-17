@@ -33,13 +33,13 @@
                                 <span>创建日期：{{ i.project_date|date:"Y-m-d" }}</span>
                             </li>
                         </ul>
-                        <button onclick="project_del({{ i.id }})" type="button" class="btn btn-default">
+                        <button onclick="project_del({{ i.id }})" type="button" class="btn btn-project">
                             <span class="glyphicon glyphicon glyphicon-trash" aria-hidden="true"></span> 删除
                         </button>
-                        <button onclick="" type="button" class="btn btn-default">
+                        <button onclick="" type="button" class="btn btn-project">
                             <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 设置
                         </button>
-                        <button onclick="window.location.href='/project/analysis?id={{ i.id }}'" type="button" class="btn btn-default">
+                        <button onclick="window.location.href='/project/analysis?id={{ i.id }}'" type="button" class="btn btn-project">
                             <span class="glyphicon glyphicon glyphicon-open" aria-hidden="true"></span> 打开
                         </button>
                     </a>

@@ -437,7 +437,7 @@ function echart_1(data,counts) {
             clockwise: false, //饼图的扇区是否是顺时针排布
             minAngle: 20, //最小的扇区角度（0 ~ 360）
             center: ['50%', '50%'], //饼图的中心（圆心）坐标
-            radius: [100, 140], //饼图的半径
+            radius: [90, 120], //饼图的半径
             avoidLabelOverlap: true, ////是否启用防止标签重叠
             itemStyle: { //图形样式
                 normal: {
@@ -470,7 +470,7 @@ function echart_1(data,counts) {
             silent: true,
             minAngle: 20, //最小的扇区角度（0 ~ 360）
             center: ['50%', '50%'], //饼图的中心（圆心）坐标
-            radius: [0, 90], //饼图的半径
+            radius: [0, 75], //饼图的半径
             itemStyle: { //图形样式
                 normal: {
                     borderColor: '#1e2239',

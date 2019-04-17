@@ -3,6 +3,7 @@
 {% load staticfiles %}
 <link rel="stylesheet" href="{% static "css/map.css" %}" >
 <link rel="stylesheet" href="{% static "css/map_.css" %}" >
+<link rel="stylesheet" href="{% static "css/path.css" %}" >
 {% endblock %}
 
 {% block content %}
@@ -21,32 +22,116 @@
                 <li>
                     <select id="s1" name="oneclass" onchange="chooseLayer()">
                         <option selected="selected" >--请选择--</option>
-                        <option >取消所有图层</option>
-                        <option >车站</option>
-                        <option >公园</option>
+                        {% for i in layers %}
+                            <option value="{{ i.layer_name }}">{{ i.layer_name }}</option>
+                        {% endfor %}
                     </select>
                 </li>
                 <li><i class="glyphicon glyphicon-screenshot"></i><a href="javascript:void(0)">标记</a> </li>
-                <li><i class="glyphicon glyphicon-search"></i><a href="javascript:void (0)">搜索</a> </li>
-                <li><i class="glyphicon glyphicon-wrench"></i><a href="javascript:void (0)">工具</a> </li>
-                <li><i class="glyphicon glyphicon-fullscreen"></i><a href="javascript:void (0)">全屏</a> </li>
+                <li><i class="glyphicon glyphicon-plus"></i><a href="javascript:add_layer()">添加到图层</a> </li>
+                <li><i class="glyphicon glyphicon-remove"></i><a href="javascript:clear_marker()">清除</a> </li>
             </ul>
         </div>
         <div  class="map_box" id="map_box"></div>
     </div>
     <div class="right map_right ">
         <div class="map_right_top">
-            <ul><li class="li_active">预警信息</li>
-                <li>分类搜索</li>
-                <li>专题信息</li></ul>
+            <ul>
+                <li class="li_active">坐标定位</li>
+                <li>城市定位</li>
+                <li>图上搜索</li>
+            </ul>
+        </div>
+        <div class="map_con">
+            <div class="map_con_div" style="display: block" >
+                <ul class="submenu">
+                    <form onsubmit="return false">
+                        <div class="left_input_top">
+                            <label>标签</label>
+                            <select id="node-label-center" onchange="getProperty()">
+                                {% for i in labels %}
+                                     <option value="{{ i.name }}">{{ i.name }} </option>
+                                {% endfor %}
+                            </select>
+                            <label>经度</label>
+                            <select id="node-property-longitude">
+                            </select>
+                            <label>纬度</label>
+                            <select id="node-property-latitude">
+                            </select>
+                            <label>显示</label>
+                            <select id="node-property">
+                            </select>
+{#                            <label>城市</label>#}
+{#                            <select id="node-property-city">#}
+{#                            </select>#}
+{#                            <label>参数</label>#}
+{#                            <select id="node-property-data">#}
+{#                            </select>#}
+                            <button type="reset" class="highlight-btn" onclick="reset()">重置</button>
+                            <button type="submit" class="highlight-btn" onclick="search_coordinate()">查询</button>
+                        </div>
+                    </form>
+                </ul>
+            </div>
+            <div class="map_con_div" >
+                <ul class="submenu">
+                    <form onsubmit="return false">
+                        <div class="left_input_top">
+                            <label>标签</label>
+                            <select id="node-label-center" onchange="getProperty()">
+                                {% for i in labels %}
+                                     <option value="{{ i.name }}">{{ i.name }} </option>
+                                {% endfor %}
+                            </select>
+                            <label>城市</label>
+                            <select id="node-property-city">
+                            </select>
+{#                            <label>参数</label>#}
+{#                            <select id="node-property-data">#}
+{#                            </select>#}
+                            <button type="reset" class="highlight-btn" onclick="reset()">重置</button>
+                            <button type="submit" class="highlight-btn" onclick="search_data()">查询</button>
+                        </div>
+                    </form>
+                </ul>
+            </div>
+            <div class="map_con_div" >
+                <ul class="submenu">
+                    <form onsubmit="return false">
+                        <div class="left_input_top">
+                            <label>标签</label>
+                            <select id="node-label-center-3" onchange="getProperty_3()">
+                                {% for i in labels %}
+                                     <option value="{{ i.name }}">{{ i.name }} </option>
+                                {% endfor %}
+                            </select>
+                            <label>经度</label>
+                            <select id="node-property-longitude-3">
+                            </select>
+                            <label>纬度</label>
+                            <select id="node-property-latitude-3">
+                            </select>
+                            <label>属性</label>
+                            <select id="property">
+                            </select>
+                            <label>内容</label>
+                            <input id="query-content" autocomplete="off" type="text" placeholder="输入对象属性值">
+                            <button type="submit" class="highlight-btn" onclick="search_point()">查询</button>
+                        </div>
+                    </form>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
 <script src="{% static "js/jquery-2.2.1.min.js" %}"></script>
 <script src="{% static "js/bootstrap.min.js" %}"></script>
 <script src="{% static "js/map_load.js" %}"></script>
+<script src="{% static "js/ajax.js" %}"></script>
 <script src="{% static "js/map_control.js" %}"></script>
 <script src="{% static "js/jquery.mapPieMenu.min.js" %}"></script>
+<script src="{% static "js/map_data.js" %}"></script>
 <script>
 $(document).ready(function() {
     $('#btn').bind('keydown', function (event) {
@@ -55,6 +140,5 @@ $(document).ready(function() {
         }
     });
 });
-
 </script>
 {% endblock %}

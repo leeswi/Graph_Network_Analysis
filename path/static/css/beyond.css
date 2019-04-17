@@ -8877,7 +8877,7 @@ button.toast-close-button {
   }
   .flip-scroll thead tr {
     display: block;
-    border: !important;
+    /*border: !important;*/
   }
   .flip-scroll thead.bordered-blue > tr > th {
     border-right: 3px solid #5db2ff !important;

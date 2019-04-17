@@ -30,15 +30,16 @@
 	cursor: default
 }
 .dashboard>ul>li>div {
-	position: absolute;
+	position: relative;
 	z-index: 9;
 	margin: 25px 0;
 	-webkit-transition: border-color .3s ease;
 	transition: border-color .3s ease;
 	overflow: hidden;
-	/* height: 200px; */
+	height: 200px;
 	bottom: 0;
 	left: 10px;
+	max-width: 90%;
 }
 .dashboard>ul>li>div>a {
 	display: block;
@@ -67,14 +68,15 @@
 .dashboard>ul>li .m-product-panel-list-note {
 	color: #7d7e7e;
 	color: rgba(0, 0, 0, .5);
-	font-size: 16px;
+	font-size: 14px;
 	padding: 0px 20px;
-    min-height: 30px;
-    max-height: 60px;
+	min-height: 30px;
+	max-height: 40px;
 	-webkit-transition: -webkit-transform .3s ease .05s;
 	transition: -webkit-transform .3s ease .05s;
 	transition: transform .3s ease .05s;
 	transition: transform .3s ease .05s, -webkit-transform .3s ease .05s;
+	overflow: hidden;
 }
 .dashboard>ul>li .m-product-panel-list-detail {
 	width: 100%;
@@ -85,13 +87,13 @@
 	-webkit-transition: -webkit-transform .3s ease .1s;
 	transition: -webkit-transform .3s ease .1s;
 	transition: transform .3s ease .1s;
-	transition: transform .3s ease .1s, -webkit-transform .3s ease .1s
+	transition: transform .3s ease .1s, -webkit-transform .3s ease .1s;
 }
 
 .dashboard>ul>li .m-product-panel-list-detail li {
 	color: #131212;
-	font-size: 14px;
-	 margin-top: 5px
+	font-size: 12px;
+	margin-top: 5px;
 }
 
 .dashboard>ul>li .m-product-panel-list-detail .c-icon {
@@ -135,11 +137,11 @@
     display:block;
     margin:auto;
     margin-top: 20%;
+    width: 100%;
 }
 
 .gly-button {
     position: relative !important;
-    left: 0 !important;
 }
 
 .cont {
@@ -327,4 +329,62 @@
     border-radius:6px;
     margin-left: 3px;
     margin-top: 8px;
+}
+
+.btn-project {
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+}
+.btn-project:focus,
+.btn-project.focus {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #8c8c8c;
+}
+.btn-project:hover {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.btn-project:active,
+.btn-project.active,
+.open > .dropdown-toggle.btn-project {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.btn-project:active:hover,
+.btn-project.active:hover,
+.open > .dropdown-toggle.btn-project:hover,
+.btn-project:active:focus,
+.btn-project.active:focus,
+.open > .dropdown-toggle.btn-project:focus,
+.btn-project:active.focus,
+.btn-project.active.focus,
+.open > .dropdown-toggle.btn-project.focus {
+  color: #333;
+  background-color: #d4d4d4;
+  border-color: #8c8c8c;
+}
+.btn-project:active,
+.btn-project.active,
+.open > .dropdown-toggle.btn-project {
+  background-image: none;
+}
+.btn-project.disabled:hover,
+.btn-project[disabled]:hover,
+fieldset[disabled] .btn-project:hover,
+.btn-project.disabled:focus,
+.btn-project[disabled]:focus,
+fieldset[disabled] .btn-project:focus,
+.btn-project.disabled.focus,
+.btn-project[disabled].focus,
+fieldset[disabled] .btn-project.focus {
+  background-color: #fff;
+  border-color: #ccc;
+}
+.btn-project .badge {
+  color: #fff;
+  background-color: #333;
 }

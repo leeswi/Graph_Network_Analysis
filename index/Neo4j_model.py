@@ -97,8 +97,14 @@ class Neo4j_Object(object):
         return res
 
     def GetSearchAll(self,query,label,key):
+        #全库精确查询
+        # cql = '''
+        # match (node:%s{%s:"%s"}) return labels(node) as labels,node
+        # ''' %(label,key,query)
+        #全库模糊查询
+        query = ".*"+query+".*"
         cql = '''
-        match (node:%s{%s:"%s"}) return labels(node) as labels,node
+        match (node:%s) where node.%s =~'%s' return labels(node) as labels,node
         ''' %(label,key,query)
         res = self.graph.run(cql).data()
         return res
@@ -203,7 +209,7 @@ class Neo4j_Object(object):
 
     def GetAverageClusteringCoefficient(self): #平均聚类系数
         cql = '''
-        call algo.triangleCount('','',{}) YIELD averageClusteringCoefficient;
+        call algo.triangleCount('','',{write:false}) YIELD averageClusteringCoefficient;
         '''
         res = self.graph.run(cql).data()
         res = round(res[0]['averageClusteringCoefficient'], 3)
@@ -422,4 +428,18 @@ class Neo4j_Object(object):
             ''' %(label,city,i)
             result = self.graph.run(cql).data()
             res[i] = result[0]['num']
+        return res
+    #获取坐标
+    def GetCoordinate(self,label,property,longitude,latitude):
+        cql = '''
+            match (n:%s) return n.%s as title,labels(n) as type,n.%s as longitude,n.%s as latitude
+        ''' % (label, property, longitude, latitude)
+        res = self.graph.run(cql).data()
+        return res
+
+    def GetPoint(self,label,property,longitude,latitude,query):
+        cql = '''
+            match (n:%s{%s:"%s"}) return n.%s as title,labels(n) as type,n.%s as longitude,n.%s as latitude
+        ''' % (label, property, query,property,longitude, latitude)
+        res = self.graph.run(cql).data()
         return res
