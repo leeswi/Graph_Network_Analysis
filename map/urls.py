@@ -8,4 +8,5 @@ urlpatterns = [
     path('GetCoordinate', views.GetCoordinate),
     path('GetPoint', views.GetPoint),
     path('AddLayer', views.AddLayer),
+    path('GetMore', views.GetMore),
 ]

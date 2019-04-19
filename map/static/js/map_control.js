@@ -71,7 +71,10 @@ function clear_marker(){
 function createTag(marker,m){
     var text = "<p>"+m.title+"<"+m.point+">"+"</p>";
     var infoWindow = new BMap.InfoWindow("<p style='font-size:14px;'>" + text + "</p>");
-    marker.addEventListener("click", function () { this.openInfoWindow(infoWindow); });
+    marker.addEventListener("click", function () {
+        this.openInfoWindow(infoWindow);
+        getMore(m);
+    });
 }
 function moveTo(longitude,latitude){
     map.panTo(new BMap.Point(longitude,latitude));
@@ -104,4 +107,36 @@ function getPoint(){
         }
     });
 	local.search(city);
+}
+
+function getMore(m){
+    var content = m.title;
+    var property = m.property;
+    var label = m.type;
+    $.ajax({
+        type : "POST",
+        url : "GetMore",
+        data : {'label':label,'content':content,'property':property},
+        contentType: "application/x-www-form-urlencoded;charset=utf-8",
+        dataType:"json",
+        success : function (data) {
+            console.log(data);
+            var t = $("table#more tbody").empty();
+            var d = $("table#more thead").empty();
+            if (!data || data.length == 0) {
+                $("<tr><th style='width: 18%'>属性</th><th>内容</th></tr>").appendTo(d);
+                $("<tr><td class = 'unit' id = 'result_'>" + "没有要查询的内容！" + "</td></tr>").appendTo(t);
+                return;
+            }
+            var content = data[0]['pro'];
+            $("<tr><th style='width: 18%'>属性</th><th>内容</th></tr>").appendTo(d);
+            for(var key in content){
+                $("<tr><td>"+key+"</td><td>"+content[key]+"</td></tr>").appendTo(t);
+            }
+        },
+        error:function(e){
+            alert("错误");
+            console.log(e);
+        }
+    });
 }

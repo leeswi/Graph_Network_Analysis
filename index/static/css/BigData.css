@@ -76,11 +76,15 @@
     border:2px solid #016ae0;
     border-radius: 10px;
     position: relative;
+    overflow: hidden;
 }
 .dataAllBorder20{
     margin: 10px 5%;
 }
-
+.inner_table {
+    height: 100%;
+    overflow: scroll;
+}
 .data_tit{
     width: 32%;
     height: 7%;
@@ -177,17 +181,15 @@
 }
 .data_left03{
     float: left;
-    width: 26%;
+    width: 24%;
     height: 96%;
     margin-left: 0.5%;
-
 }
 .data_left04{
     float: left;
-    width: 46%;
+    width: 50%;
     height: 96%;
     margin-left: 0.5%;
-
 }
 .data_left05{
     float: left;

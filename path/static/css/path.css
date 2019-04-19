@@ -223,7 +223,9 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 svg{
     width: 100% !important;
-    height: 95% !important;
     margin-left: 35px !important;
     z-index:9999 !important;
+}
+#div0 {
+    padding: 0 0 0 70%;
 }

@@ -16,7 +16,8 @@ $("#cus_ser").mouseout(function(){
 function ShowGraph(nodes,edges,keyslist){
 	//设置区域
 	var marge = {top:60,bottom:60,left:60,right:60};
-	var svg = d3.select("svg");
+	var svg = d3.select("#div1");
+	var svgL = d3.select("#div0");
 	var o = document.getElementById("div1");
 	var width = (o.clientWidth||o.offsetWidth);
 	// var width = 900;
@@ -86,7 +87,7 @@ function ShowGraph(nodes,edges,keyslist){
 	// })
 	var g = svg.append("g")
 		.attr("class", "everything");
-
+	var gL = svgL.append("g");
 	// 绘制连线
     var svg_links = g.append('g')
 		.selectAll("line")
@@ -94,7 +95,7 @@ function ShowGraph(nodes,edges,keyslist){
 		.enter()
 		.append("line")
 		.style("stroke", "#ddd")
-		.style("stroke-width", 1)
+		.style("stroke-width", 1);
 
 	//绘制连线文字
 	var svg_linksText = g.append("g")
@@ -106,7 +107,7 @@ function ShowGraph(nodes,edges,keyslist){
 		.text(function(d){
 			text = d.relation.match(/(?<=:).*?(?={)/);
 			return text;
-		})
+		});
 	// 绘制节点
     var svg_nodes = g.append('g')
         .selectAll("circle")
@@ -184,26 +185,28 @@ function ShowGraph(nodes,edges,keyslist){
 			temp["color"]=lab_color[i];
 			legend_color.push(temp);
 		}
-		var svg_legend = g.append('g')
+		var svg_legend = gL.append('g')
 			.selectAll("rect")
 			.data(legend_color)
 			.enter()
 			.append("rect")
-			.attr("x", function(d,i) {return i*80+20;})
-			.attr("y", 20)
+			.attr("x", function(d,i){return (i%5)*80+20})
+			.attr("y", function(d,i){return parseInt(i/5)*20+20})
 			.attr("width",20)
 			.attr("height",12)
 			.attr("rx",3)
 			.attr("ry",3)
-			.attr("fill",function(d,i){return d.color});
-		var svg_legend_text = g.append("g")
+			.attr("fill",function(d,i){return d.color})
+			.on('wheel.zoom',null);
+		var svg_legend_text = gL.append("g")
 			.selectAll("text")
 			.data(legend_color)
 			.enter()
 			.append("text")
 			.text(function(d){return d.label;})
-			.attr("x", function(d,i) {return i*80+40;})
-			.attr("y",30)
+			.attr("x", function(d,i) {return (i%5)*80+40;})
+			.attr("y", function(d,i){return parseInt(i/5)*20+30})
+			.on('wheel.zoom',null);
 	}
 	legend(lab_color);
 

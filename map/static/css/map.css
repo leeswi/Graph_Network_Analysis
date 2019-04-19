@@ -16,8 +16,6 @@
 }
 .map_con_div{
     display: none;
-    background-color: #030829;
-    padding: 10px;
 }
 .map_left{
     width: 79%;
@@ -28,6 +26,7 @@
     width: 20.5%;
     height: 100%;
     background-color: #081832;
+    overflow: scroll;
 }
 .map_box{
     width: 100%;
@@ -247,4 +246,22 @@ label {
 }
 #query-content{
     color: #fff !important;
+}
+.map_query{
+    background-color: #030829;
+    padding: 10px;
+}
+.map_table{
+    width: 100%;
+    margin-top: 10px;
+    overflow: scroll;
+}
+.map_table table{
+    color: #fff;
+    word-wrap:break-word;
+}
+.map_table table > tbody > tr > td{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

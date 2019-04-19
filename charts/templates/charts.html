@@ -27,17 +27,12 @@
                     <option>ArticleRank(3.5+)</option>
                     <option>特征向量中心性(3.5+)</option>
                 </select>
-                <select class="select-div" id="node-label">
-                    <option>Loc</option>
+                <select class="select-div" id="node-label" onchange="getRelationship()">
                     {% for i in labels %}
                          <option value="{{ i.name }}">{{ i.name }} </option>
                     {% endfor %}
                 </select>
                 <select class="select-div" id="node-link">
-                    <option>ROAD</option>
-                    {% for i in relaType %}
-                         <option value="{{ i.relaType }}">{{ i.relaType }} </option>
-                    {% endfor %}
                 </select>
                 <button onclick="refresh()" type="button" class="refresh-btn">
                     <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
@@ -112,16 +107,12 @@
                     <option>UnionFind并查集算法</option>
                     <option>SCC强连通分量</option>
                 </select>
-                <select class="select-div-right" id="node-label-right">
+                <select class="select-div-right" id="node-label-right"  onchange="getRelationship_right()">
                     {% for i in labels %}
                          <option value="{{ i.name }}">{{ i.name }} </option>
                     {% endfor %}
                 </select>
                 <select class="select-div-right" id="node-link-right">
-                    <option selected="selected" disabled="disabled"  style='display: none' value=''>----</option>
-                    {% for i in relaType %}
-                         <option value="{{ i.relaType }}">{{ i.relaType }} </option>
-                    {% endfor %}
                 </select>
                 <input class="node-input" type="text" value="" id="node-input" placeholder="输入节点...">
                 <button onclick="refresh_right()" type="button" class="refresh-btn">

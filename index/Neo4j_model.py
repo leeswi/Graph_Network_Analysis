@@ -78,6 +78,11 @@ class Neo4j_Object(object):
         res = self.graph.run(cql).data()
         return res[0]
 
+    def getRelationship(self,label):
+        cql = "match (n:%s)-[r]-(m) return distinct type(r) as keys" % label
+        res = self.graph.run(cql).data()
+        return res
+
     def GetIndex(self):
         cql = "CALL apoc.index.list()"
         res = self.graph.run(cql).data()
@@ -110,10 +115,12 @@ class Neo4j_Object(object):
         return res
 
     def GetMore(self,index,content,label):
+        print(content)
         if(',' in label):
             label = label.split(',')[0]
         # key = labels_key.objects.get(labels=label)
         # key = key.main_key
+        print(label)
         if not content.isdigit():
             cql = '''
             match (n:%s{%s:"%s"}) return properties(n) as pro

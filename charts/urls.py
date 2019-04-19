@@ -10,4 +10,5 @@ urlpatterns = [
     path('GetGeo',views.getGeo),
     path('GetSun',views.getSun),
     path('GetGPS',views.getGPS),
+    path('getRelationship',views.getRelationship),
 ]

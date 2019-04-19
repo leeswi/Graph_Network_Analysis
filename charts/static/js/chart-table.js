@@ -1,9 +1,8 @@
 
-$(function () {
-    var oTable = new TableInit();
-    oTable.Init();
-    var oTable_r = new TableInit_right();
-    oTable_r.Init();
+$(document).ready(function(){
+    getProperty();
+    getRelationship();
+    getRelationship_right();
 });
 
 var TableInit = function () {
@@ -12,6 +11,7 @@ var TableInit = function () {
     var algo= $("#node-algo option:selected").val();
     var label= $("#node-label option:selected").val();
     var link= $("#node-link option:selected").val();
+    if(link=='----'){link = ''};
 
     oTableInit.Init = function () {
         $('#charts_left').bootstrapTable({
@@ -89,10 +89,7 @@ var TableInit_right = function () {
                     contentType: "application/x-www-form-urlencoded;charset=utf-8",
                     dataType:"json",
                     success : function (msg) {
-                        if(msg==0){alert('映射表无记录！');return}
-                        request.success({
-                            row : msg
-                        });
+                        if(msg==0){alert('映射表无记录！');$("#charts_right").bootstrapTable('destroy');return}
                         $('#charts_right').bootstrapTable('load', msg);
                     },
                     error:function(){
@@ -217,10 +214,6 @@ function left_charts(data){
     myChart.setOption(option);
 }
 
-$(document).ready(function(){
-    getProperty();
-});
-
 function getProperty(label){
     label=$("#node-label-center option:selected").val();//这就是selected的值
     $("#node-property-longitude").empty();
@@ -251,7 +244,48 @@ function getProperty(label){
     });
 }
 
+function getRelationship(label){
+    label=$("#node-label option:selected").val();//这就是selected的值
+    $("#node-link").empty();
+    $("#node-link").append("<option>----</option>");
+    $.ajax({
+        type : "POST",
+        url : "/charts/getRelationship",
+        data : {'label':label},
+        contentType: "application/x-www-form-urlencoded;charset=utf-8",
+        dataType:"json",
+        success : function (msg) {
+            for(let i in msg){
+                $("#node-link").append("<option value='"+msg[i].keys+"'>"+msg[i].keys+"</option>");
+            }
+        },
+        error:function(){
+            alert("错误");
+        }
+    });
+}
+function getRelationship_right(label){
+    label=$("#node-label-right option:selected").val();//这就是selected的值
+    $("#node-link-right").empty();
+    $("#node-link-right").append("<option>----</option>");
+    $.ajax({
+        type : "POST",
+        url : "/charts/getRelationship",
+        data : {'label':label},
+        contentType: "application/x-www-form-urlencoded;charset=utf-8",
+        dataType:"json",
+        success : function (msg) {
+            for(let i in msg){
+                $("#node-link-right").append("<option value='"+msg[i].keys+"'>"+msg[i].keys+"</option>");
+            }
+        },
+        error:function(){
+            alert("错误");
+        }
+    });
+}
 function get_geo(){
+    $("#charts_center").bootstrapTable('destroy');
     var label = $("#node-label-center option:selected").val();
     var longitude = $("#node-property-longitude option:selected").val();
     var latitude = $("#node-property-latitude option:selected").val();
@@ -271,12 +305,10 @@ function get_geo(){
                         contentType: "application/x-www-form-urlencoded;charset=utf-8",
                         dataType:"json",
                         success : function (msg) {
-                            if(msg==0){alert('映射表无记录！');return}
+                            if(msg==0){$("#charts_center").bootstrapTable('destroy');alert('映射表无记录！');return}
                             if(msg==-1){alert('查询参数错误，请重新输入！');return}
-                            request.success({
-                                row : msg
-                            });
                             $('#charts_center').bootstrapTable('load', msg);
+                            $('#charts_center').bootstrapTable('hideLoading');
                         },
                         error:function(){
                             alert("错误");

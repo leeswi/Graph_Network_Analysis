@@ -105,8 +105,8 @@ function add_layer(){
         contentType: "application/x-www-form-urlencoded;charset=utf-8",
         dataType:"json",
         success : function (msg) {
-            if(msg==0){alert("添加失败");return}
-            else{alert("添加成功，请刷新界面！")}
+            if(msg == 0){alert("添加失败");return}
+            else{window.location.reload();}
         },
         error:function(e){
             alert("错误");

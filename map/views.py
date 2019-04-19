@@ -43,6 +43,7 @@ def GetCoordinate(request):
         temp["type"] = i["type"][0] #暂不考虑两个标签的情况
         temp["point"] = str(i["longitude"])+"|"+str(i["latitude"])
         temp["isOpen"] = 1
+        temp["property"] = property
         Coordinate.append(temp)
     return HttpResponse(json.dumps(Coordinate))
 
@@ -74,5 +75,14 @@ def GetPoint(request):
         temp["type"] = i["type"][0]  # 暂不考虑两个标签的情况
         temp["point"] = str(i["longitude"]) + "|" + str(i["latitude"])
         temp["isOpen"] = 1
+        temp["property"] = property
         Coordinate.append(temp)
     return HttpResponse(json.dumps(Coordinate))
+
+def GetMore(request):
+    graph = Neo4j_Object()
+    label = request.POST.get('label', '')
+    property = request.POST.get('property', '')
+    content = request.POST.get('content', '')
+    res = graph.GetMore(property,content,label)
+    return HttpResponse(json.dumps(res))

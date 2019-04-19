@@ -101,7 +101,7 @@ function initChina(data){
                         label:{
                             show:false,//是否显示标签
                             textStyle: {
-                                color: "rgb(249, 249, 249)"
+                                color: "#fff"
                             }
                         }
                     },
@@ -138,7 +138,10 @@ function initEcharts(pName){
             show: false,
             orient: 'horizontal',//图例的排列方向
             x:'left',//图例的位置
-            data:['统计量']
+            data:['统计量'],
+            textStyle: {
+                color: "#fff"
+            }
         },
 
         visualMap: {//颜色的设置  dataRange
@@ -190,7 +193,7 @@ function initEcharts(pName){
                         label:{
                             show:false,//是否显示标签
                             textStyle: {
-                                color: "rgb(249, 249, 249)"
+                                color: "#fff"
                             }
                         }
                     },
@@ -199,7 +202,6 @@ function initEcharts(pName){
                     }
                 },
                 top:"3%",//组件距离容器的距离
-
             }
         ]
     };
@@ -361,7 +363,7 @@ function get_GPS(){
         contentType: "application/x-www-form-urlencoded;charset=utf-8",
         dataType:"json",
         success : function (msg) {
-            if(msg==0){alert('映射表无记录！');return}
+            if(msg==0){alert('映射表无记录！');$("#charts_center").bootstrapTable('destroy');return}
             if(msg==-1){alert('查询参数错误，请重新输入！');return}
             map_data = data_to_map(msg);
             initChina(map_data);
@@ -381,7 +383,6 @@ function data_to_map(raw_data) {
         temp['value'] = raw_data[i];
         model_data.push(temp);
     }
-    console.log(model_data);
     return model_data
 }
 

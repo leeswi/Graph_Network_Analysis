@@ -44,35 +44,47 @@
         </div>
         <div class="map_con">
             <div class="map_con_div" style="display: block" >
-                <ul class="submenu">
-                    <form onsubmit="return false">
-                        <div class="left_input_top">
-                            <label>标签</label>
-                            <select id="node-label-center" onchange="getProperty()">
-                                {% for i in labels %}
-                                     <option value="{{ i.name }}">{{ i.name }} </option>
-                                {% endfor %}
-                            </select>
-                            <label>经度</label>
-                            <select id="node-property-longitude">
-                            </select>
-                            <label>纬度</label>
-                            <select id="node-property-latitude">
-                            </select>
-                            <label>显示</label>
-                            <select id="node-property">
-                            </select>
-{#                            <label>城市</label>#}
-{#                            <select id="node-property-city">#}
-{#                            </select>#}
-{#                            <label>参数</label>#}
-{#                            <select id="node-property-data">#}
-{#                            </select>#}
-                            <button type="reset" class="highlight-btn" onclick="reset()">重置</button>
-                            <button type="submit" class="highlight-btn" onclick="search_coordinate()">查询</button>
-                        </div>
-                    </form>
-                </ul>
+                <div class="map_query">
+                    <ul class="submenu">
+                        <form onsubmit="return false">
+                            <div class="left_input_top">
+                                <label>标签</label>
+                                <select id="node-label-center" onchange="getProperty()">
+                                    {% for i in labels %}
+                                         <option value="{{ i.name }}">{{ i.name }} </option>
+                                    {% endfor %}
+                                </select>
+                                <label>经度</label>
+                                <select id="node-property-longitude">
+                                </select>
+                                <label>纬度</label>
+                                <select id="node-property-latitude">
+                                </select>
+                                <label>显示</label>
+                                <select id="node-property">
+                                </select>
+    {#                            <label>城市</label>#}
+    {#                            <select id="node-property-city">#}
+    {#                            </select>#}
+    {#                            <label>参数</label>#}
+    {#                            <select id="node-property-data">#}
+    {#                            </select>#}
+                                <button type="reset" class="highlight-btn" onclick="reset()">重置</button>
+                                <button type="submit" class="highlight-btn" onclick="search_coordinate()">查询</button>
+                            </div>
+                        </form>
+                    </ul>
+                </div>
+                <div class="map_table">
+                    <table id="more" class="table table-bordered">
+                        <thead>
+                        </thead>
+                        <tbody>
+                        <tr>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="map_con_div" >
                 <ul class="submenu">
