@@ -109,3 +109,37 @@ function addalgo(){
     $('.algo-cont').attr('style', 'visibility: visible').find('.pop-up').attr('style', 'visibility: visible').siblings().attr('style', 'visibility: hidden');
 }
 
+function importxls() {
+    $.ajax({
+        type: "GET",
+        url: "importxls",
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        timeout: 50000,
+        async: true,
+        success: function (data) {
+            if(data == 0){alert('文件读取错误');return}
+            if(data == 200){$("#tb_departments").bootstrapTable('refresh');alert('导入成功');return}
+        },
+        error: function (err) {
+            console.log("error" + err);
+        }
+    });
+}
+
+function exportxls() {
+    $.ajax({
+        type: "GET",
+        url: "exportxls",
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        timeout: 50000,
+        async: true,
+        success: function (data) {
+            alert('成功');
+        },
+        error: function (err) {
+            console.log("error" + err);
+        }
+    });
+}

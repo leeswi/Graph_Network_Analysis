@@ -3,7 +3,8 @@ from django.http import HttpResponse
 from index.Neo4j_model import Neo4j_Object
 from path.models import labels_key,algo_module
 from django.core import serializers
-
+import xlwt as ExcelWrite
+import xlrd
 # Create your views here.
 def path(request):
     title = "路径探索"
@@ -102,4 +103,41 @@ def Manage(request,Manage):
             error = "操作失败:" + e
             return HttpResponse(error)
         else:
+            return HttpResponse(200)
+    if (Manage == 'exportxls'):
+        data = labels_key.objects.all()
+        header = ['labels','main_key','second_key']
+        xls = ExcelWrite.Workbook()
+        sheet = xls.add_sheet("Sheet1")
+        i = 0
+        for each_header in header:
+            sheet.write(0, i, each_header)
+            i = i + 1
+        for i in range(len(data)):
+            sheet.write(i+1, 0, data[i].labels)
+            sheet.write(i+1, 1, data[i].main_key)
+            sheet.write(i+1, 2, data[i].second_key)
+        xls.save('labels_key.xls')
+        return HttpResponse(200)
+    if (Manage == 'importxls'):
+        # file_path = request.POST.get('file')
+        # # print(file_path)
+        try:
+            data = xlrd.open_workbook('labels_key.xls')
+        except Exception as e:
+            print(e)
+            return HttpResponse(0)
+        else:
+            table = data.sheets()[0]
+            nrow = table.nrows
+            for i in range(1,nrow):
+                label = table.cell(i,0).value
+                main_key = table.cell(i,1).value
+                second_key = table.cell(i, 2).value
+                try:
+                    res = labels_key.objects.get(labels=label)
+                except:
+                    labels_key.objects.create(labels=label, main_key=main_key, second_key=second_key)
+                else:
+                    labels_key.objects.filter(labels=label).update(main_key=main_key, second_key=second_key)
             return HttpResponse(200)
