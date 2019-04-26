@@ -4,7 +4,7 @@ import re
 from project.models import project_module
 class Neo4j_Object(object):
 
-    def __init__(self,url='http://localhost:11012',user='neo4j',pwd='123'):
+    def __init__(self,url='http://localhost:11009',user='neo4j',pwd='123'):
         """数据初始化"""
         self.graph = Graph(url, username=user, password=pwd)
         self.links = []
@@ -115,12 +115,10 @@ class Neo4j_Object(object):
         return res
 
     def GetMore(self,index,content,label):
-        print(content)
         if(',' in label):
             label = label.split(',')[0]
         # key = labels_key.objects.get(labels=label)
         # key = key.main_key
-        print(label)
         if not content.isdigit():
             cql = '''
             match (n:%s{%s:"%s"}) return properties(n) as pro
@@ -199,6 +197,42 @@ class Neo4j_Object(object):
         ''' %(label,rela,weight)
         res_node = self.graph.run(cql).data()
         return res_node
+
+    def GetPageRankWithCypher(self,label,rela,key,if_,content):
+        if(label==''):
+            u = '(u)'
+            n = '(n)'
+            m = '(m)'
+        else:
+            u = '(u:'+label+')'
+            n = '(n:'+label+')'
+            m = '(m:'+label+')'
+        if(rela==''):
+            r = '[r]'
+        else:
+            r = '[r:'+rela+']'
+        filter = key+if_+content
+        if(filter=='='):
+            cql = '''
+                CALL algo.pageRank.stream(
+                'MATCH %s RETURN id(u) as id', 
+                'MATCH %s-%s-%s RETURN id(n) as source, id(m) as target',
+                {graph:'cypher'}
+                ) YIELD nodeId,score with algo.getNodeById(nodeId) as node, score order by score desc limit 10
+                RETURN node,score
+            ''' % (u, n, r, m)
+        else:
+            cql = '''
+                CALL algo.pageRank.stream(
+                'MATCH %s WHERE u.%s RETURN id(u) as id', 
+                'MATCH %s-%s-%s where n.%s and m.%s RETURN id(n) as source, id(m) as target',
+                {graph:'cypher'}
+                ) YIELD nodeId,score with algo.getNodeById(nodeId) as node, score order by score desc limit 10
+                RETURN node,score
+            ''' %(u,filter,n,r,m,filter,filter)
+        # print(cql)
+        res = self.graph.run(cql).data()
+        return res
 
     def FindRela(self,s_label,s_key,s_content,e_label,e_key,e_content,deepth):
         deepth = int(deepth)
@@ -450,3 +484,62 @@ class Neo4j_Object(object):
         ''' % (label, property, query,property,longitude, latitude)
         res = self.graph.run(cql).data()
         return res
+
+    def GetCompareGraph(self,label,rela,key,if_,content):
+        if(label==''):
+            u = '(u)'
+            n = '(n)'
+            m = '(m)'
+        else:
+            u = '(u:'+label+')'
+            n = '(n:'+label+')'
+            m = '(m:'+label+')'
+        if(rela==''):
+            r = '[r]'
+        else:
+            r = '[r:'+rela+']'
+        filter = key+if_+content
+
+        if(filter=='='):
+            cql1 = '''
+                match %s return count(u) as nodenum, count(distinct labels(u)) as labelnum
+            ''' % u #计算节点数
+            cql2 = '''
+                match %s-%s->%s return count(r) as relanum
+            ''' % (n, r, m) #计算关系数
+            cql3 = '''
+                match %s with apoc.node.degree(u) as degree return sum(degree) as degree
+            ''' % u #计算 度
+            cql4 = '''
+                CALL algo.triangleCount(
+                'MATCH %s RETURN id(u) as id',
+                'MATCH %s-%s-%s RETURN id(n) as source,id(m) as target',
+                {graph:'cypher'})
+                YIELD averageClusteringCoefficient
+            ''' % (u, n, r, m) #计算子图平局聚类系数
+        else:
+            cql1 = '''
+                match %s where u.%s return count(u) as nodenum, count(distinct labels(u)) as labelnum
+            ''' % (u, filter)
+            cql2 = '''
+                match %s-%s->%s where n.%s and m.%s return count(r) as relanum
+            ''' %(n,r,m,filter,filter)
+            cql3 = '''
+                 match %s where u.%s with apoc.node.degree(u) as degree return sum(degree) as degree
+            ''' % (u, filter)  # 计算 度
+            cql4 = '''
+                CALL algo.triangleCount(
+                'MATCH %s where u.%s RETURN id(u) as id',
+                'MATCH %s-%s-%s  where n.%s and m.%s RETURN id(n) as source,id(m) as target',
+                {graph:'cypher'})
+                YIELD triangleCount,averageClusteringCoefficient
+            ''' % (u, filter, n, r, m, filter, filter)
+        res1 = self.graph.run(cql1).data()
+        res2 = self.graph.run(cql2).data()
+        res3 = self.graph.run(cql3).data()
+        res4 = self.graph.run(cql4).data()
+        res1.append(res2[0])
+        res1.append(res3[0])
+        res1.append(res4[0])
+        # print(res1)
+        return res1

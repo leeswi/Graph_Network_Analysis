@@ -300,10 +300,13 @@ $(function () {
                 }
             },
             series: series
-        };;
+        };
         if (option && typeof option === "object") {
             myChart.setOption(option, true);
         }
+        window.addEventListener("resize",function(){
+            myChart.resize();
+        });
 
     }
 

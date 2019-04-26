@@ -4,7 +4,7 @@ from index.Neo4j_model import Neo4j_Object
 from path.models import labels_key,algo_module
 from django.core import serializers
 import xlwt as ExcelWrite
-import xlrd
+import xlrd,json
 # Create your views here.
 def path(request):
     title = "路径探索"
@@ -40,12 +40,21 @@ def relationship(request):
         return render(request, 'relationship.html', locals())
 
 def index_manage(request):
+    title = "系统设置"
     username = request.user.username
     if not username:
         return redirect('/user/login.html')
     else:
         algo_card = list(algo_module.objects.all().values('id','algo_name','algo_content','algo_date'))
         return render(request, 'index-manage.html', locals())
+
+def compare(request):
+    title = "对比分析"
+    username = request.user.username
+    if not username:
+        return redirect('/user/login.html')
+    else:
+        return render(request, 'compare.html', locals())
 
 def Manage(request,Manage):
     if (Manage == 'keysManage'):
@@ -141,3 +150,58 @@ def Manage(request,Manage):
                 else:
                     labels_key.objects.filter(labels=label).update(main_key=main_key, second_key=second_key)
             return HttpResponse(200)
+
+def for_compare(request,ajax):
+    graph = Neo4j_Object()
+    label = request.POST.get('label', '')
+    rela = request.POST.get('rela', '')
+    key1 = request.POST.get('key1', '')
+    if1 = request.POST.get('if1', '')
+    content1 = request.POST.get('content1', '')
+    if(ajax=='pagerank'):
+        res = graph.GetPageRankWithCypher(label,rela,key1,if1,content1)
+        res_ = []
+        for i in res:
+            temp = {}
+            node = i['node']
+            label = str(node.labels)
+            label = label[1:]
+            property = get_property(label)
+            if(property!='未知节点'):
+                temp['node'] = node[property]
+            else:
+                temp['node'] = property
+            temp['label'] = label
+            temp['score'] = round(i['score'],3)
+            res_.append(temp)
+        # print(res_)
+        return HttpResponse(json.dumps(res_))
+    if(ajax=='count'):
+        res = graph.GetCompareGraph(label,rela,key1,if1,content1)
+        all_nodes = graph.GetNodesCounts()
+        all_labels = graph.GetLabels()
+        all_relas = graph.GetRelaCounts()
+        result = {}
+        result['nodenum'] = res[0]['nodenum']
+        result['allnode'] = all_nodes
+        result['labelnum'] = res[0]['labelnum']
+        result['alllabel'] = len(all_labels)
+        result['relanum'] = res[1]['relanum']
+        result['allrelas'] = all_relas
+        result['avgdegree'] = round(res[2]['degree']/res[0]['nodenum'],2)
+        result['avgCC'] = round(res[3]['averageClusteringCoefficient'],3)
+        return HttpResponse(json.dumps(result))
+
+
+def get_property(label):
+    # 获取映射表记录
+    try:
+        property = labels_key.objects.get(labels=label)
+    except:
+        property = '未知节点'
+    else:
+        if (property.main_key):
+            property = property.main_key
+        elif (property.second_key):
+            property = property.second_key
+    return property

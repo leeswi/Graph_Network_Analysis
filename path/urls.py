@@ -7,5 +7,7 @@ urlpatterns = [
     path('test.html', views.test),
     path('index-manage.html', views.index_manage),
     path('relationship.html', views.relationship),
+    path('compare.html', views.compare),
     path('<Manage>', views.Manage),
+    path('compare/<ajax>', views.for_compare),
 ]

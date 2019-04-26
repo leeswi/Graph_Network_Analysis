@@ -91,6 +91,7 @@ var TableInit_right = function () {
                     success : function (msg) {
                         if(msg==0){alert('映射表无记录！');$("#charts_right").bootstrapTable('destroy');return}
                         $('#charts_right').bootstrapTable('load', msg);
+                        $('#charts_right').bootstrapTable('hideLoading');
                     },
                     error:function(){
                         alert("错误");

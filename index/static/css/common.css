@@ -57,6 +57,7 @@ a {
     background: #030829;
     padding:0 20px;
     min-width: 100%;
+	font-size: 14px;
 }
 .header>.header_logo{
     padding:10px 10px 0px 0px;

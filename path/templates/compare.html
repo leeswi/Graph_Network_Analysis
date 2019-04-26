@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% block link %}
+{% load staticfiles %}
+    <link rel="stylesheet" href="{% static "css/path.css" %}">
+    <link rel="stylesheet" href="{% static "css/compare.css" %}">
+{% endblock %}
+
+{% block content %}
+<div class="path_content">
+    <div class="mainbox">
+        <ul class="clearfix">
+            <li>
+                <div class="boxall" style="height:65%">
+                    <div class="alltitle">主体1详细信息</div>
+                    <div class="clearfix">
+                        <div class="pie">
+                            <div class="sy" id="echarts6" style="width:32%;height: 80%;margin-top: 15px"></div>
+                            <div class="sy" id="echarts7" style="width:32%;height: 80%;margin-top: 15px"></div>
+                            <div class="sy" id="echarts8" style="width:32%;height: 80%;margin-top: 15px"></div>
+                        </div>
+                    </div>
+                    <div class="addnew">
+                        <div class="tit02"><span>影响力节点排名</span></div>
+                        <div class="adduser" id="pr1">
+                            <ul class="clearfix" id="addpr1">
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="boxfoot"></div>
+                </div>
+                <div class="boxall" style="height: 30%">
+                    <div class="alltitle">网络特征参数</div>
+                    <div class="sycm">
+                        <ul class="clearfix">
+                            <li><h2 id="avgdegree1">----</h2><span>平均度</span></li>
+                            <li><h2 id="avgCC1">----</h2><span>平均聚类系数</span></li>
+                        </ul>
+                        <div style="border-bottom: 1px solid rgba(255,255,255,.1)"></div>
+                        <ul class="clearfix">
+                            <li><h2>----</h2><span>模块化</span></li>
+                            <li><h2>----</h2><span>平均路径长度</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="bar">
+                    <div class="barbox">
+                        <ul class="clearfix">
+                            <li class="pulll_left counter" id="name_1">名称1</li>
+                            <li class="pulll_left counter" id="name_2">名称2</li>
+                        </ul>
+                    </div>
+                    <div class="barbox2">
+                        <ul class="clearfix">
+                            <li class="pulll_left"><a href="javascript:choose_1()">主体1</a></li>
+                            <li class="pulll_left"><a href="javascript:choose_2()">主体2</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="map">
+                    <div class="map1"><img src="{% static "images/lbx.png" %}"></div>
+                    <div class="map2"><img src="{% static "images/jt.png" %}"></div>
+                    <div class="map3"><img src="{% static "images/map.png" %}"></div>
+                </div>
+            </li>
+            <li>
+                <div class="boxall" style="height:65%">
+                    <div class="alltitle">主体2详细信息</div>
+                    <div class="clearfix">
+                        <div class="pie">
+                            <div class="sy" id="echarts3" style="width:32%;height: 80%;margin-top: 15px"></div>
+                            <div class="sy" id="echarts4" style="width:32%;height: 80%;margin-top: 15px"></div>
+                            <div class="sy" id="echarts5" style="width:32%;height: 80%;margin-top: 15px"></div>
+                        </div>
+                    </div>
+                    <div class="addnew">
+                        <div class="tit02"><span>影响力节点排名</span></div>
+                        <div class="adduser" id="pr2">
+                            <ul class="clearfix" id="addpr2">
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="boxfoot"></div>
+                </div>
+                <div class="boxall" style="height: 30%">
+                    <div class="alltitle">网络特征参数</div>
+                    <div class="sycm">
+                        <ul class="clearfix">
+                            <li><h2 id="avgdegree2">----</h2><span>平均度</span></li>
+                            <li><h2 id="avgCC2">----</h2><span>平均聚类系数</span></li>
+                        </ul>
+                        <div style="border-bottom: 1px solid rgba(255,255,255,.1)"></div>
+                        <ul class="clearfix">
+                            <li><h2>----</h2><span>模块化</span></li>
+                            <li><h2>----</h2><span>平均路径长度</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="cont" id="compare_1">
+    <div class="pop-up">
+        <span class="close-pop"></span>
+        <h2 class="title">主体1设置</h2>
+        <form onsubmit="return false" class="pop-form">
+            {% csrf_token %}
+            <div class="set-div">
+                <div class="set-box">
+                    <label for="">名称</label>
+                    <input type="text" value="" name="name_1">
+                </div>
+                <div class="set-box">
+                    <label for="">标签</label>
+                    <input type="text" value="" name="label_1">
+                </div>
+                <div class="set-box">
+                    <label for="">关系</label>
+                    <input type="text" value="" name="rela_1">
+                </div>
+                <div class="filter">
+                    <label for="">筛选</label>
+                    <input type="text" value="" name="key1_1">
+                    <select id="filter_if">
+                        <option>=</option>
+                        <option><</option>
+                        <option>></option>
+                        <option>in</option>
+                    </select>
+                    <input type="text" value="" name="property1_1" >
+                </div>
+                <button class="add-btn" onclick="compare_1('addpr1')" ><img src="{% static "images/plus.png" %}" alt="">添加</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="cont" id="compare_2">
+    <div class="pop-up">
+        <span class="close-pop"></span>
+        <h2 class="title">主体2设置</h2>
+        <form onsubmit="return false" class="pop-form">
+            {% csrf_token %}
+            <div class="set-div">
+                <div class="set-box">
+                    <label for="">名称</label>
+                    <input type="text" value="" name="name_2">
+                </div>
+                <div class="set-box">
+                    <label for="">标签</label>
+                    <input type="text" value="" name="label_2">
+                </div>
+                <div class="set-box">
+                    <label for="">关系</label>
+                    <input type="text" value="" name="rela_2">
+                </div>
+                <div class="filter">
+                    <label for="">筛选</label>
+                    <input type="text" value="" name="key1_2">
+                    <select id="filter_if_2">
+                        <option>=</option>
+                        <option><</option>
+                        <option>></option>
+                        <option>in</option>
+                    </select>
+                    <input type="text" value="" name="property1_2" >
+                </div>
+                <button class="add-btn" onclick="compare_2('addpr2')" ><img src="{% static "images/plus.png" %}" alt="">添加</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="{% static "js/jquery-2.2.1.min.js" %}"></script>
+<script src="{% static "js/echarts-all-3.js" %}"></script>
+<script src="{% static "js/ajax.js" %}"></script>
+<script src="{% static "js/compare-setup.js" %}"></script>
+<script src="{% static "js/compare-echarts.js" %}"></script>
+
+{% endblock %}
