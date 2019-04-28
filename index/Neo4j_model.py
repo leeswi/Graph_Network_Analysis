@@ -211,12 +211,21 @@ class Neo4j_Object(object):
             r = '[r]'
         else:
             r = '[r:'+rela+']'
-        filter = key+if_+content
-        if(filter=='='):
+        #数字不加引号，非数字加引号
+        if not content.isdigit():
+            if (if_ != '包含'):
+                content = "'"+content+"'"
+        #模糊搜索
+        if(if_ != '包含'):
+            filter = key+if_+content
+        else:
+            filter = key+"=~ '.*"+content+".*'"
+
+        if(filter=='=' or filter=="=''"):
             cql = '''
                 CALL algo.pageRank.stream(
-                'MATCH %s RETURN id(u) as id', 
-                'MATCH %s-%s-%s RETURN id(n) as source, id(m) as target',
+                "MATCH %s RETURN id(u) as id", 
+                "MATCH %s-%s-%s RETURN id(n) as source, id(m) as target",
                 {graph:'cypher'}
                 ) YIELD nodeId,score with algo.getNodeById(nodeId) as node, score order by score desc limit 10
                 RETURN node,score
@@ -224,8 +233,8 @@ class Neo4j_Object(object):
         else:
             cql = '''
                 CALL algo.pageRank.stream(
-                'MATCH %s WHERE u.%s RETURN id(u) as id', 
-                'MATCH %s-%s-%s where n.%s and m.%s RETURN id(n) as source, id(m) as target',
+                "MATCH %s WHERE u.%s RETURN id(u) as id", 
+                "MATCH %s-%s-%s where n.%s and m.%s RETURN id(n) as source, id(m) as target",
                 {graph:'cypher'}
                 ) YIELD nodeId,score with algo.getNodeById(nodeId) as node, score order by score desc limit 10
                 RETURN node,score
@@ -332,7 +341,7 @@ class Neo4j_Object(object):
         })
         YIELD nodeId, score
         RETURN algo.getNodeById(nodeId).%s AS node, nodeId AS id, score as centrality
-        ORDER BY score DESC
+        ORDER BY centrality DESC
         ''' %(label,link,property)
         res = self.graph.run(cql).data()
         return res
@@ -342,7 +351,7 @@ class Neo4j_Object(object):
         CALL algo.articleRank.stream("%s", "%s", {iterations:20, dampingFactor:0.85})
         YIELD nodeId, score
         RETURN algo.getNodeById(nodeId).%s AS node, nodeId AS id, score as centrality
-        ORDER BY score DESC
+        ORDER BY centrality DESC
         ''' %(label,link,property)
         res = self.graph.run(cql).data()
         return res
@@ -352,7 +361,7 @@ class Neo4j_Object(object):
         CALL algo.eigenvector.stream("%s", "%s", {normalization: "max"})
         YIELD nodeId, score
         RETURN algo.getNodeById(nodeId).%s AS node, nodeId AS id, score as centrality
-        ORDER BY score DESC
+        ORDER BY centrality DESC
         ''' %(label,link,property)
         res = self.graph.run(cql).data()
         return res
@@ -478,6 +487,33 @@ class Neo4j_Object(object):
         res = self.graph.run(cql).data()
         return res
 
+    def GetRegion(self,label,property,longitude,latitude,key, if_, content):
+        if(label==''):
+            u = '(u)'
+        else:
+            u = '(u:'+label+')'
+
+        # 数字不加引号，非数字加引号
+        if not content.isdigit():
+            if(if_ != '包含'):
+                content = "'" + content + "'"
+        # 模糊搜索
+        if (if_ != '包含'):
+            filter = key + if_ + content
+        else:
+            filter = key + "=~ '.*" + content + ".*'"
+
+        if (filter == '=' or filter == "=''"):
+            cql = '''
+                match %s return u.%s as title,labels(u) as type,u.%s as longitude,u.%s as latitude
+            ''' % (u, property, longitude, latitude)
+        else:
+            cql = '''
+                match %s where u.%s return u.%s as title,labels(u) as type,u.%s as longitude,u.%s as latitude
+            ''' % (u, filter, property, longitude, latitude)
+        res = self.graph.run(cql).data()
+        return res
+
     def GetPoint(self,label,property,longitude,latitude,query):
         cql = '''
             match (n:%s{%s:"%s"}) return n.%s as title,labels(n) as type,n.%s as longitude,n.%s as latitude
@@ -485,7 +521,7 @@ class Neo4j_Object(object):
         res = self.graph.run(cql).data()
         return res
 
-    def GetCompareGraph(self,label,rela,key,if_,content):
+    def GetCompareGraph(self, label, rela, key, if_, content):
         if(label==''):
             u = '(u)'
             n = '(n)'
@@ -498,9 +534,18 @@ class Neo4j_Object(object):
             r = '[r]'
         else:
             r = '[r:'+rela+']'
-        filter = key+if_+content
 
-        if(filter=='='):
+        # 数字不加引号，非数字加引号
+        if not content.isdigit():
+            if(if_ != '包含'):
+                content = "'" + content + "'"
+        # 模糊搜索
+        if (if_ != '包含'):
+            filter = key + if_ + content
+        else:
+            filter = key + "=~ '.*" + content + ".*'"
+
+        if(filter=='=' or filter=="=''"):
             cql1 = '''
                 match %s return count(u) as nodenum, count(distinct labels(u)) as labelnum
             ''' % u #计算节点数
@@ -512,8 +557,8 @@ class Neo4j_Object(object):
             ''' % u #计算 度
             cql4 = '''
                 CALL algo.triangleCount(
-                'MATCH %s RETURN id(u) as id',
-                'MATCH %s-%s-%s RETURN id(n) as source,id(m) as target',
+                "MATCH %s RETURN id(u) as id",
+                "MATCH %s-%s-%s RETURN id(n) as source,id(m) as target",
                 {graph:'cypher'})
                 YIELD averageClusteringCoefficient
             ''' % (u, n, r, m) #计算子图平局聚类系数
@@ -529,8 +574,8 @@ class Neo4j_Object(object):
             ''' % (u, filter)  # 计算 度
             cql4 = '''
                 CALL algo.triangleCount(
-                'MATCH %s where u.%s RETURN id(u) as id',
-                'MATCH %s-%s-%s  where n.%s and m.%s RETURN id(n) as source,id(m) as target',
+                "MATCH %s where u.%s RETURN id(u) as id",
+                "MATCH %s-%s-%s  where n.%s and m.%s RETURN id(n) as source,id(m) as target",
                 {graph:'cypher'})
                 YIELD triangleCount,averageClusteringCoefficient
             ''' % (u, filter, n, r, m, filter, filter)

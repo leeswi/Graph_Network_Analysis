@@ -13,7 +13,7 @@ $(function(){
 function getIndex(){
     $.ajax({
         type: "GET",
-        url: "/network/getIndex",
+        url: "/search/getIndex",
         contentType: "application/json;charset=utf-8",
         dataType: "json",
         timeout: 50000,
@@ -39,7 +39,7 @@ function getIndex(){
 function getMainIndex(){
     $.ajax({
         type: "GET",
-        url: "/network/getMainIndex",
+        url: "/search/getMainIndex",
         contentType: "application/json;charset=utf-8",
         dataType: "json",
         timeout: 50000,
@@ -59,7 +59,7 @@ function setMainindex(){
         alert("不可选项！")
     }else {
         $.ajax({
-            url: "/network/setMainindex",
+            url: "/search/setMainindex",
             type: "POST",
             contentType: "application/x-www-form-urlencoded;charset=utf-8",
             data: {

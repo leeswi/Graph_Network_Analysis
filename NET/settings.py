@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user',
     'index',
-    'network',
+    'search',
     'path',
     'map',
     'project',

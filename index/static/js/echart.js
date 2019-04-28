@@ -544,7 +544,7 @@ function echart_2(label,keyslist) {
     }
     if(label){
         $.ajax({
-            url : "/network/pagerank",
+            url : "/search/pagerank",
             type : "POST",
             contentType: "application/x-www-form-urlencoded;charset=utf-8",
             data : {'label':label},
@@ -763,7 +763,7 @@ function echart_4(checked,datas){
 function getLouvai(){
     $.ajax({
         type: "GET",
-        url: "/network/getLouvai",
+        url: "/search/getLouvai",
         contentType: "application/json;charset=utf-8",
         dataType: "json",
         timeout: 50000,

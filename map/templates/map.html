@@ -38,8 +38,8 @@
         <div class="map_right_top">
             <ul>
                 <li class="li_active">坐标定位</li>
-                <li>城市定位</li>
-                <li>图上搜索</li>
+                <li>范围搜索</li>
+                <li>单点搜索</li>
             </ul>
         </div>
         <div class="map_con">
@@ -75,41 +75,47 @@
                         </form>
                     </ul>
                 </div>
-                <div class="map_table">
-                    <table id="more" class="table table-bordered">
-                        <thead>
-                        </thead>
-                        <tbody>
-                        <tr>
-                        </tr>
-                        </tbody>
-                    </table>
+            </div>
+            <div class="map_con_div" >
+                <div class="map_query_">
+                    <ul class="submenu">
+                        <form onsubmit="return false">
+                            <div class="left_input_top">
+                                <label>标签</label>
+                                <select id="node-label-center-2" onchange="getProperty_2()">
+                                    {% for i in labels %}
+                                         <option value="{{ i.name }}">{{ i.name }} </option>
+                                    {% endfor %}
+                                </select>
+                                <label>经度</label>
+                                <select id="node-property-longitude-2">
+                                </select>
+                                <label>纬度</label>
+                                <select id="node-property-latitude-2">
+                                </select>
+                                <label>显示</label>
+                                <select id="node-property-2">
+                                </select>
+                                <label>参数</label>
+                                <select id="node-property-data">
+                                </select>
+                                <select id="node-property-if">
+                                    <option>=</option>
+                                    <option><</option>
+                                    <option>></option>
+                                    <option>包含</option>
+                                </select>
+                                <input type="text" value="" name="property-filter" >
+                            </div>
+                        </form>
+                        <button type="reset" class="highlight-btn" onclick="reset()">重置</button>
+                        <button type="submit" class="highlight-btn" onclick="search_region()">查询</button>
+                    </ul>
                 </div>
             </div>
             <div class="map_con_div" >
-                <ul class="submenu">
-                    <form onsubmit="return false">
-                        <div class="left_input_top">
-                            <label>标签</label>
-                            <select id="node-label-center" onchange="getProperty()">
-                                {% for i in labels %}
-                                     <option value="{{ i.name }}">{{ i.name }} </option>
-                                {% endfor %}
-                            </select>
-                            <label>城市</label>
-                            <select id="node-property-city">
-                            </select>
-{#                            <label>参数</label>#}
-{#                            <select id="node-property-data">#}
-{#                            </select>#}
-                            <button type="reset" class="highlight-btn" onclick="reset()">重置</button>
-                            <button type="submit" class="highlight-btn" onclick="search_data()">查询</button>
-                        </div>
-                    </form>
-                </ul>
-            </div>
-            <div class="map_con_div" >
-                <ul class="submenu">
+                <div class="map_query">
+                    <ul class="submenu">
                     <form onsubmit="return false">
                         <div class="left_input_top">
                             <label>标签</label>
@@ -133,7 +139,18 @@
                         </div>
                     </form>
                 </ul>
+                </div>
             </div>
+        </div>
+        <div class="map_table">
+            <table id="more" class="table table-bordered">
+                <thead>
+                </thead>
+                <tbody>
+                <tr>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

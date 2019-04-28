@@ -145,7 +145,8 @@ def Manage(request,Manage):
                 second_key = table.cell(i, 2).value
                 try:
                     res = labels_key.objects.get(labels=label)
-                except:
+                except Exception as e:
+                    print(e)
                     labels_key.objects.create(labels=label, main_key=main_key, second_key=second_key)
                 else:
                     labels_key.objects.filter(labels=label).update(main_key=main_key, second_key=second_key)

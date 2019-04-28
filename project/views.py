@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from .models import algo_module,project_module
 from path.models import labels_key
 from index.Neo4j_model import Neo4j_Object
-from network.views import getJson
+from search.views import getJson
 import re,json
 # Create your views here.
 def project(request):

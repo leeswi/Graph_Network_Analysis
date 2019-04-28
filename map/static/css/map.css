@@ -249,7 +249,11 @@ label {
 }
 .map_query{
     background-color: #030829;
-    padding: 10px;
+    padding: 10px 20px 10px 10px;
+}
+.map_query_{
+    background-color: #030829;
+    padding: 10px 20px 30px 10px;
 }
 .map_table{
     width: 100%;

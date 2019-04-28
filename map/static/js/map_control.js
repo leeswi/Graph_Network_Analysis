@@ -40,19 +40,7 @@ function addMapControl() {
     }));
     map.addControl(new BMap.NavigationControl({anchor: BMAP_ANCHOR_TOP_LEFT}));
 }
-//标注点数组
-// var markerArr = [{"title":"北京北站","content":"我的备注","point":"116.35885|39.949901","isOpen":1,"icon":{w:21,h:21,l:0,t:0,x:6,lb:5},"type":"station"}
-// 	 ,{title:"北京西站",content:"我的备注",point:"116.32723|39.901209",isOpen:1,icon:{w:21,h:21,l:0,t:0,x:6,lb:5},type:"station"}
-// 	 ,{title:"北京站",content:"我的备注",point:"116.437039|39.913607",isOpen:1,icon:{w:21,h:21,l:0,t:0,x:6,lb:5},type:"station"}
-// 	 ,{title:"地坛公园",content:"我的备注",point:"116.422666|39.960521",isOpen:1,icon:{w:23,h:25,l:23,t:21,x:9,lb:12},type:"park"}
-// 	 ,{title:"天坛公园",content:"我的备注",point:"116.418067|39.885709",isOpen:1,icon:{w:23,h:25,l:23,t:21,x:9,lb:12},type:"park"}
-// 	 ,{title:"世界花卉大观园",content:"我的备注",point:"116.36|39.8383",isOpen:1,icon:{w:23,h:25,l:23,t:21,x:9,lb:12},type:"park"}
-// 	 ,{title:"朝阳公园",content:"我的备注",point:"116.487632|39.945919",isOpen:1,icon:{w:23,h:25,l:23,t:21,x:9,lb:12},type:"park"}
-// 	 ,{title:"颐和园",content:"我的备注",point:"116.2775|39.999001",isOpen:1,icon:{w:23,h:25,l:23,t:21,x:9,lb:12},type:"park"}
-// 	 ,{title:"圆明园",content:"我的备注",point:"116.316235|40.013757",isOpen:1,icon:{w:23,h:25,l:23,t:21,x:9,lb:12},type:"park"}
-// 	 ,{title:"北京南站",content:"我的备注",point:"116.385656|39.869706",isOpen:1,icon:{w:21,h:21,l:0,t:0,x:6,lb:5},type:"station"}
-// ];
-//创建marker
+
 function addMarker(points) {
     for (var i = 0; i < points.length; i++) {
         var json = points[i];
@@ -120,7 +108,6 @@ function getMore(m){
         contentType: "application/x-www-form-urlencoded;charset=utf-8",
         dataType:"json",
         success : function (data) {
-            console.log(data);
             var t = $("table#more tbody").empty();
             var d = $("table#more thead").empty();
             if (!data || data.length == 0) {

@@ -47,6 +47,26 @@ def GetCoordinate(request):
         Coordinate.append(temp)
     return HttpResponse(json.dumps(Coordinate))
 
+def GetRegion(request):
+    graph = Neo4j_Object()
+    label = request.POST.get('label', '')
+    longitude = request.POST.get('longitude', '')
+    latitude = request.POST.get('latitude', '')
+    key = request.POST.get('property', '')
+    if_ = request.POST.get('if_', '')
+    content = request.POST.get('filter', '')
+    res = graph.GetRegion(label,key,longitude,latitude,key,if_,content)
+    Coordinate = []
+    for i in res:
+        temp = {}
+        temp["title"] = i["title"]
+        temp["type"] = i["type"][0] #暂不考虑两个标签的情况
+        temp["point"] = str(i["longitude"])+"|"+str(i["latitude"])
+        temp["isOpen"] = 1
+        temp["property"] = key
+        Coordinate.append(temp)
+    return HttpResponse(json.dumps(Coordinate))
+
 def AddLayer(request):
     label = request.POST.get('label', '')
     longitude = request.POST.get('longitude', '')

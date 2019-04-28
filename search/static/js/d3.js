@@ -190,7 +190,7 @@ function ShowGraph(nodes,edges,keyslist){
 			.data(legend_color)
 			.enter()
 			.append("rect")
-			.attr("x", function(d,i){return (i%5)*80+20})
+			.attr("x", function(d,i){return (i%5)*100+20})
 			.attr("y", function(d,i){return parseInt(i/5)*20+20})
 			.attr("width",20)
 			.attr("height",12)
@@ -204,7 +204,7 @@ function ShowGraph(nodes,edges,keyslist){
 			.enter()
 			.append("text")
 			.text(function(d){return d.label;})
-			.attr("x", function(d,i) {return (i%5)*80+40;})
+			.attr("x", function(d,i) {return (i%5)*100+40;})
 			.attr("y", function(d,i){return parseInt(i/5)*20+30})
 			.on('wheel.zoom',null);
 	}
