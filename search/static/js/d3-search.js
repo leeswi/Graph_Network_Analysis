@@ -127,6 +127,7 @@ function ShowGraph(nodes,edges,keyslist){
           .on("drag", dragged)
           .on("end", dragended))
 		.on("dblclick", lockNode)
+        .on("click",function(d){ nodeinfo(d); })
 		.on('mouseover', function (d){
 			link_hover(d,true);
 			d3.select(this).style("stroke-width",2);
@@ -275,6 +276,23 @@ function ShowGraph(nodes,edges,keyslist){
 		lockNode.fx = null;
 		lockNode.fy = null;
 	}
+	function nodeinfo(d){
+        console.log(d);
+        var label = d.label;
+        label = label.split(':');
+        for(let i in keyslist){
+            if(label[1] == keyslist[i].labels){
+                key = keyslist[i].main_key;
+                break;
+            }
+        }
+        if(key==''){
+            alert('未知节点，请完善映射表')
+        }else{
+            var content = d[key];
+            d3_Searchmore(label[1],key,content);
+        }
+    }
 	// 计算节点出入度
 	function degree(all_links,source_ndoe){
 		var InDegree = 0;
@@ -327,7 +345,7 @@ function removeEmptyArrayEle(arr){
 			}
 	}
 	return arr;
-	};
+}
 
 function d3_Searchmore(label,key,content) {
     var index = key;
@@ -337,7 +355,7 @@ function d3_Searchmore(label,key,content) {
         function (data) {
             var t = $("table#more tbody").empty();
             if (!data || data.length == 0) {
-                $("<tr><td class = 'unit' id = 'result_'>" + "没有要查询的内容！" + "</td></tr>").appendTo(t)
+                $("<tr><td class = 'unit' id = 'result_'>" + "没有要查询的内容！" + "</td></tr>").appendTo(t);
                 return;
             }
             var content = data[2][0]['pro'];

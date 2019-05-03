@@ -227,6 +227,10 @@
     padding-bottom: 8px;
     text-indent: 10px;
 }
+.resize-btn {
+    background-color: transparent;
+    font-size: 10px;
+}
 .font01{
     font-size: 30px;
     color: #4cae4c;

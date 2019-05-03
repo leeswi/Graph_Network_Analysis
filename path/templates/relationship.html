@@ -36,14 +36,15 @@
                     <form onsubmit="return false">
                         <div class="left_input">
                             <span class="tag">起点 </span>
-                            <select id="select_data_1">
+                            <select id="select_data_1" onchange="getProperty('select_data_1','select_data_property_1')">
                                 <option value="" disabled selected>选择对象标签</option>
                                 {% for i in labels %}
-                                <option value="{{ i }}">{{ i.name }} </option>
+                                <option value="{{ i.name }}">{{ i.name }}</option>
                                 {% endfor %}
                             </select>
-{#                                <input id="local_object_data" runat="server" autocomplete="off" data-provide="typeahead" data-items="12" type="text" placeholder="输入对象标签" autocomplete="off">#}
-                            <input id="local_object_data" runat="server" autocomplete="off" data-provide="typeahead" data-items="12" type="text" placeholder="输入对象属性" autocomplete="off">
+                            <select id="select_data_property_1">
+                                <option value="" disabled selected>选择对象属性</option>
+                            </select>
                             <input id="local_object_data_2" type="text" placeholder="输入属性内容" autocomplete="off">
                             <input type="reset" style="display:none;" >
                         </div>
@@ -53,13 +54,15 @@
                     <form onsubmit="return false">
                         <div class="left_input">
                             <span class="tag">终点 </span>
-                            <select id="select_data_2">
+                            <select id="select_data_2" onchange="getProperty('select_data_2','select_data_property_2')">
                                 <option value="" disabled selected>选择对象标签</option>
                                 {% for i in labels %}
-                                <option value="{{ i.name }}">{{ i.name }} </option>
+                                <option value="{{ i.name }}">{{ i.name }}</option>
                                 {% endfor %}
                             </select>
-                            <input id="local_object_data2_1" runat="server" autocomplete="off" data-provide="typeahead" data-items="12" type="text" placeholder="输入对象属性" autocomplete="off">
+                            <select id="select_data_property_2">
+                                <option value="" disabled selected>选择对象属性</option>
+                            </select>
                             <input id="local_object_data2_2" type="text" placeholder="输入属性内容" autocomplete="off">
                             <input type="reset" style="display:none;" >
                         </div>
@@ -146,6 +149,7 @@
 <script src="{% static "js/d3.js" %}"></script>
 <script src="{% static "js/ajax.js" %}"></script>
 <script src="{% static "js/beyond.js" %}"></script>
+<script src="{% static "js/path.js" %}"></script>
 
 <script>
 $('#local_object_data').typeahead({
@@ -156,7 +160,7 @@ $('#local_object_data').typeahead({
         }else {
             $.ajax({
                 type: "GET",
-                url: "/network/keys?label=" + encodeURIComponent(label),
+                url: "/search/keys?label=" + encodeURIComponent(label),
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 timeout: 50000,
@@ -181,7 +185,7 @@ $('#local_object_data2_1').typeahead({
         }else {
             $.ajax({
                 type: "GET",
-                url: "/network/keys?label=" + encodeURIComponent(label),
+                url: "/search/keys?label=" + encodeURIComponent(label),
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 timeout: 50000,
@@ -201,15 +205,15 @@ $('#local_object_data2_1').typeahead({
 function find_rela(){
     var start_label = $('#select_data_1 option:selected').text();
     var end_label = $('#select_data_2 option:selected').text();
-    var start_key = document.getElementById("local_object_data").value;
-    var end_key = document.getElementById("local_object_data2_1").value;
+    var start_key = $('#select_data_property_1 option:selected').text();
+    var end_key = $('#select_data_property_2 option:selected').text();
     var start_content = document.getElementById("local_object_data_2").value;
     var end_content = document.getElementById("local_object_data2_2").value;
     var deepth = $("#deepth").val();
     if(deepth == '输入查询深度'){deepth=''}
     if(start_label && end_label && start_key && end_key && start_content && end_content){
         $.ajax({
-            url : "/network/findrela",
+            url : "/search/findrela",
             type : "POST",
             contentType: "application/x-www-form-urlencoded;charset=utf-8",
             data : {'start_label':start_label,'end_label':end_label,'start_key':start_key,'end_key':end_key,'start_content':start_content,'end_content':end_content,'deepth':deepth},

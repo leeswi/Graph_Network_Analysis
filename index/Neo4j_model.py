@@ -4,7 +4,7 @@ import re
 from project.models import project_module
 class Neo4j_Object(object):
 
-    def __init__(self,url='http://localhost:11009',user='neo4j',pwd='123'):
+    def __init__(self,url='http://localhost:11012',user='neo4j',pwd='123'):
         """数据初始化"""
         self.graph = Graph(url, username=user, password=pwd)
         self.links = []
@@ -128,7 +128,7 @@ class Neo4j_Object(object):
         res = self.graph.run(cql).data()
         return res
 
-    def GetGraph(self,index,content,label,deepth=3):
+    def GetGraph(self,index,content,label,deepth=2):
         # key = labels_key.objects.get(labels=label)
         # key = key.main_key
         if (',' in label):
@@ -259,7 +259,8 @@ class Neo4j_Object(object):
 
     def GetAverageClusteringCoefficient(self): #平均聚类系数
         cql = '''
-        call algo.triangleCount('','',{write:false}) YIELD averageClusteringCoefficient;
+            call algo.triangleCount('','',{write:false}) 
+            YIELD averageClusteringCoefficient;
         '''
         res = self.graph.run(cql).data()
         res = round(res[0]['averageClusteringCoefficient'], 3)

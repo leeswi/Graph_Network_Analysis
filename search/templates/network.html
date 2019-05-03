@@ -14,7 +14,7 @@
 <div class="net_content">
     <div class="index_tabs" >
         <div class="inner">
-            <div class="data_left03">
+            <div class="data_left03" id="searchview">
                 <div class="dataAllNo01 maginS01">
                     <div class="dataAllBorder01">
                         <div class="dataAllBorder02" id="dataAllBorder02">
@@ -47,12 +47,26 @@
                     </div>
                 </div>
             </div>
-            <div class="data_left04">
+            <div class="data_left04" id="netview">
                 <!--style="margin-top: 6.3%"-->
                 <div class="dataAllNo01">
                     <div class="dataAllBorder01">
                         <div class="dataAllBorder02" >
-                            <div class="data_tit3">网络视图查看</div>
+                            <div class="data_tit3"><button onclick="resize_full_()" id="resize_full_" class="resize-btn">
+                                <span class="glyphicon glyphicon-resize-full" ></span>
+                            </button>
+                            <button onclick="resize_small_()" class="resize-btn" id="resize_small_" style="display: none">
+                                <span class="glyphicon glyphicon-resize-small" ></span>
+                            </button>
+                                网络视图查看
+                            <button onclick="resize_full()" id="resize_full" class="resize-btn">
+                                <span class="glyphicon glyphicon-resize-full" ></span>
+                            </button>
+                            <button onclick="resize_small()" class="resize-btn" id="resize_small" style="display: none">
+                                <span class="glyphicon glyphicon-resize-small" ></span>
+                            </button>
+                            </div>
+
                             <svg id="div0" width=90% height="calc(8%)" style="margin: 0 5% 0 5%"></svg>
                             <svg id="div1" width=100% height="calc(88%)"></svg>
                             <div id="cus_ser">
@@ -85,7 +99,7 @@
                     </div>
                 </div>
             </div>
-            <div class="data_left03">
+            <div class="data_left03" id="infomore">
                 <div class="dataAllNo01 maginS01">
                     <div class="dataAllBorder01">
                         <div class="dataAllBorder02">
@@ -136,7 +150,7 @@
 <script src="{% static "js/honeySwitch.js" %}"></script>
 <script src="{% static "js/ajax.js" %}"></script>
 <script src="{% static "js/d3.v5.min.js" %}"></script>
-<script src="{% static "js/d3.js" %}"></script>
+<script src="{% static "js/d3-search.js" %}"></script>
 <script src="{% static "js/bootstrap-table.js" %}"></script>
 <script src="{% static "js/bootstrap-table-zh-CN.min.js" %}"></script>
 <script src="{% static "js/btable.js" %}"></script>
@@ -204,9 +218,55 @@ var spread = $('#deepsearch');
 btn.click(function () {
     $("#btable").hide();
     spread.slideToggle()
-})
-
-
+});
+function resize_full(){
+    $("#infomore").hide();
+    $("#resize_full").hide();
+    $("#resize_small").show();
+    if($("#searchview").is(':visible')){
+        $("#netview").css("width","75%");
+    }else {
+        $("#netview").css("width", "100%");
+    }
+    $("#div0").css("width","90%");
+    $("#div1").css("width","100%");
+}
+function resize_small(){
+    $("#infomore").show();
+    $("#resize_full").show();
+    $("#resize_small").hide();
+    if($("#searchview").is(':visible')){
+        $("#netview").css("width","50%");
+    }else {
+        $("#netview").css("width", "75%");
+    }
+    $("#div0").css("width","90%");
+    $("#div1").css("width","100%");
+}
+function resize_full_(){
+    $("#searchview").hide();
+    $("#resize_full_").hide();
+    $("#resize_small_").show();
+    if($("#infomore").is(':visible')){
+        $("#netview").css("width","75%");
+    }else {
+        $("#netview").css("width", "100%");
+    }
+    $("#div0").css("width","90%");
+    $("#div1").css("width","100%");
+}
+function resize_small_(){
+    $("#searchview").show();
+    $("#resize_full_").show();
+    $("#resize_small_").hide();
+    if($("#infomore").is(':visible')){
+        $("#netview").css("width","50%");
+    }else {
+        $("#netview").css("width", "75%");
+    }
+    $("#div0").css("width","90%");
+    $("#div1").css("width","100%");
+}
 </script>
 
 {% endblock %}
